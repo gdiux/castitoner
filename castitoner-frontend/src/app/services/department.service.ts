@@ -42,9 +42,9 @@ export class DepartmentService {
   /** ================================================================
    *  LOAD DEPARTMENT
   ==================================================================== */
-  loadDepartment(){
+  loadDepartment(desde:number = 0, hasta: number = 10){
 
-    return this.http.get<LoadDepartment>(`${base_url}/departments`, this.headers)
+    return this.http.get<LoadDepartment>(`${base_url}/departments?desde=${desde}&hasta=${hasta}`, this.headers)
         .pipe(
           map( resp =>{
             return resp;

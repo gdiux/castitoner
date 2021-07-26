@@ -23,6 +23,7 @@ export class Product {
         public wholesale: number,
         public img: string | 'no-image',
         public department: _departamento,
+        public pid: string,
         public kit?: Kit[],
         public stock?: number,
         public min?: number,
@@ -33,10 +34,10 @@ export class Product {
         public damaged?: number,
         public expiration?: Date,
         public status?: boolean,
-        public pid?: string,
         public visibility?: boolean,
         public low?: boolean,
         public out?: boolean,
+        public _id?: string
     ){}
 
     /** ================================================================

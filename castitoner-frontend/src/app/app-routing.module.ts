@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, data:{ titulo: 'Inicio'} },
   { path: 'about', component: AboutComponent, data:{ titulo: 'Nosotros'} },
   { path: 'product/:id', component: ProductComponent, data:{ titulo: 'Producto'} },
-  { path: 'search', component: SearchComponent, data:{ titulo: 'Buscador'} },
+  { path: 'search/:tipo/:termino', component: SearchComponent, data:{ titulo: 'Buscador'} },
   { path: 'contac', component: ContactComponent, data:{ titulo: 'Contacto'} },
   { path: 'cart', component: CartComponent, data:{ titulo: 'Mi Carrito'} },
   { path: '**', component: NopagefoundComponent }

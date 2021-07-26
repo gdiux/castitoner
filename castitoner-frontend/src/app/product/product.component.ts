@@ -3,9 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
 
+// MODELS
+import { Product } from '../models/product.model';
+
 // SERVICES
 import { ProductsService } from '../services/products.service';
-import { Product } from '../models/product.model';
+import { CarritoService } from '../services/carrito.service';
+import { Carrito } from '../models/carrito.model';
 
 // import Swiper core and required modules
 import SwiperCore, {
@@ -27,8 +31,15 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 })
 export class ProductComponent implements OnInit {
 
+  public carrtioServicio: Carrito[] = [];
+
   constructor(  private porductService: ProductsService,
-                private activatedRoute: ActivatedRoute) { }
+                private activatedRoute: ActivatedRoute,
+                private carritoService: CarritoService) { 
+
+                  
+                  
+                }
 
   ngOnInit(): void {
 
@@ -37,6 +48,18 @@ export class ProductComponent implements OnInit {
       this.cargarProducto(id);
       
     });
+
+    this.carrtioServicio = this.carritoService.carrito;
+
+    // CARRITO LOCAL
+    if (localStorage.getItem('carrito')) {
+      this.local = localStorage.getItem('carrito');
+      this.carrito = JSON.parse(this.local);
+    }else{
+      this.carrito = [];
+    }
+
+    this.carrtioServicio = this.carrito;
 
   }
 
@@ -71,6 +94,74 @@ export class ProductComponent implements OnInit {
           this.productos = products;
 
         });
+  }
+
+  /** ================================================================
+   *  AGREGAR AL CARRITO
+  ==================================================================== */
+  public carrito: Carrito[] = [];
+  public local: any;
+  agregarCarrito(product: Product, qty: number ){
+
+    if (localStorage.getItem('carrito')) {
+
+      // CARRITO LOCAL
+      this.local = localStorage.getItem('carrito');
+      this.carrito = JSON.parse(this.local);
+
+      const validarItem = this.carrito.findIndex( (resp) =>{      
+        if (resp.product === product.pid ) {
+          return true;
+        }else {
+          return false;
+        }
+      });
+
+      if ( validarItem === -1 ) {
+
+        // AGREGAMOS EL PRODUCTO
+        this.carrito.push({
+          product: product.pid,
+          name: product.name,
+          img: product.img,
+          qty,
+          price: product.price
+        });
+
+      }else{
+        
+        let qtyTemp = Number(this.carrito[validarItem].qty);
+        qtyTemp += Number(qty);
+
+        this.carrito[validarItem].qty = qtyTemp;
+        
+      }
+    }else{
+
+      // AGREGAMOS EL PRODUCTO textColor
+      this.carrito.push({
+        product: product.pid,
+        name: product.name,
+        img: product.img,
+        qty,
+        price: product.price
+      });
+
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+
+    this.carritoService.upCarrito(this.carrito);
+
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      text: 'Se ha agregado con exito',
+      showConfirmButton: false,
+      backdrop: 'rgba(0,0,0, 0.0)',
+      timer: 1000
+    });
+    
   }
 
 }

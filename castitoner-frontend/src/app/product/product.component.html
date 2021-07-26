@@ -1,5 +1,7 @@
 <ng-container *ngIf="producto">
 
+
+
     <!-- Custom page title-->
     <div class="page-title-overlap bg-dark pt-4">
         <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
@@ -80,7 +82,7 @@
                                           <option value="4">4</option>
                                           <option value="5">5</option>
                                         </select>
-                                        <button class="btn btn-primary btn-shadow d-block w-100" type="button">
+                                        <button (click)="agregarCarrito(producto, 1 )" class="btn btn-primary btn-shadow d-block w-100" type="button">
                                             <i class="ci-cart fs-lg me-2"></i>Agregar al carrito
                                         </button>
                                     </div>
@@ -143,7 +145,7 @@
         <ng-template swiperSlide *ngFor="let producto of productos">
             <div class="card product-card card-static">
                 <button class="btn-wishlist btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="ci-heart"></i></button>
-                <a class="card-img-top d-block overflow-hidden" [routerLink]="['/product', producto.pid]"><img [src]="producto.img | imagen: 'products'" alt="Product"></a>
+                <a class="card-img-top d-block overflow-hidden" [routerLink]="['/product', producto.pid]"><img [src]="producto.img | imagen: 'products'" [alt]="producto.name"></a>
                 <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"> {{producto.name}} </a>
                     <h3 class="product-title fs-sm"><a [routerLink]="['/product', producto.pid]"> {{ producto.name }} </a></h3>
                     <div class="d-flex justify-content-between">

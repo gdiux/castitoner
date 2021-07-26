@@ -100,7 +100,7 @@
                     <img [src]="producto.img | imagen: 'products'" alt="Product">
                 </a>
                 <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"> {{ producto.department.name }} </a>
-                    <h3 class="product-title fs-sm"><a [routerLink]="['/product']">{{ producto.name }}</a></h3>
+                    <h3 class="product-title fs-sm"><a [routerLink]="['/product', producto.pid]">{{ producto.name }}</a></h3>
                     <div class="d-flex justify-content-between">
                         <div class="product-price"><span class="text-accent"> {{producto.price | currency}} </span></div>
                         <!-- <div class="star-rating"><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="card-body card-body-hidden">
-                    <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button"><i class="ci-cart fs-sm me-1"></i>Agregar al carrito</button>
+                    <button (click)="agregarCarrito( producto, 1 )" class="btn btn-primary btn-sm d-block w-100 mb-2" type="button"><i class="ci-cart fs-sm me-1"></i>Agregar al carrito</button>
                     <div class="text-center">
                         <a class="nav-link-style fs-ms" href="#quick-view-electro" data-bs-toggle="modal" (click)="productoModal(producto)">
                             <i class="ci-eye align-middle me-1"></i>Ver producto
@@ -463,7 +463,7 @@
                                     <option value="5">5</option>
                                     </select>
 
-                                <button class="btn btn-primary btn-shadow d-block w-100" type="button"><i class="ci-cart fs-lg me-2"></i>Agregar al carrito</button>
+                                <button (click)="agregarCarrito( productoM, 1 )" class="btn btn-primary btn-shadow d-block w-100" type="button"><i class="ci-cart fs-lg me-2"></i>Agregar al carrito</button>
                             </div>
 
                             <div class="d-flex mb-4">

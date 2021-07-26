@@ -1,2 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import '~swiper/swiper-bundle';
+.btn-link-depar {
+    background: rgba(0, 0, 0, 0.2);
+}

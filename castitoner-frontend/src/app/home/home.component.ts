@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
+import Swal from 'sweetalert2';
+
 // SERVICES
 import { ProductsService } from '../services/products.service';
 
 // MODELS
 import { Product } from '../models/product.model';
+import { Carrito } from '../models/carrito.model';
 
 // import Swiper core and required modules
 import SwiperCore, {
@@ -14,6 +17,7 @@ import SwiperCore, {
   A11y,
   Autoplay
 } from 'swiper/core';
+
 
 // install Swiper modules
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
@@ -61,6 +65,72 @@ export class HomeComponent implements OnInit {
 
     this.productoM = producto;
 
+  }
+
+  /** ================================================================
+   *  AGREGAR AL CARRITO
+  ==================================================================== */
+  public carrito: Carrito[] = [];
+  public local: any;
+  agregarCarrito(product: Product, qty: number ){
+
+    if (localStorage.getItem('carrito')) {
+
+      // CARRITO LOCAL
+      this.local = localStorage.getItem('carrito');
+      this.carrito = JSON.parse(this.local);
+
+      const validarItem = this.carrito.findIndex( (resp) =>{      
+        if (resp.product === product.pid ) {
+          return true;
+        }else {
+          return false;
+        }
+      });
+
+      if ( validarItem === -1 ) {
+
+        // AGREGAMOS EL PRODUCTO
+        this.carrito.push({
+          product: product.pid,
+          name: product.name,
+          img: product.img,
+          qty,
+          price: product.price
+        });
+
+      }else{
+        
+        let qtyTemp = Number(this.carrito[validarItem].qty);
+        qtyTemp += Number(qty);
+
+        this.carrito[validarItem].qty = qtyTemp;
+        
+      }
+    }else{
+
+      // AGREGAMOS EL PRODUCTO
+      this.carrito.push({
+        product: product.pid,
+        name: product.name,
+        img: product.img,
+        qty,
+        price: product.price
+      });
+
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      text: 'Se ha agregado con exito',
+      showConfirmButton: false,
+      backdrop: 'rgba(0,0,0, 0.0)',
+      timer: 1000
+    });
+    
   }
 
 }

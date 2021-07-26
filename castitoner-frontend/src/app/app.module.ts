@@ -22,6 +22,8 @@ import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
 import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
 import { PipesModule } from './pipes/pipes.module';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { PipesModule } from './pipes/pipes.module';
     SearchComponent,
     ContactComponent,
     CartComponent,
-    BreadcrumsComponent
+    BreadcrumsComponent,
+    DashboardComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
