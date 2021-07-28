@@ -65,23 +65,23 @@ export class UserService {
   validateToken():Observable<boolean>{
     const token = localStorage.getItem('token') || '';
     
-    return this.http.get(`${base_url}/login/renew`, {
-      headers: {
-        'x-token': token
-      }
-    }).pipe(
-      tap( (resp: any) => {
-        
-        const { email, name, img, uid, status, cedula, phone, address, city, department, zip} = resp.usuario;
+    return this.http.get(`${base_url}/login/renew/client`, this.headers)
+    
+      .pipe(
+        tap( (resp: any) => {
+          
+          const {name, img, cid, status} = resp.usuario;
 
-        this.user = new User( email, name, img, uid, status, cedula, phone, address, city, department, zip);        
+          this.user = new User(name, img, cid, status);
+          
+          console.log(this.user);          
 
-        localStorage.setItem('token', resp.token);
+          localStorage.setItem('token', resp.token);
 
-      }),
-      map( resp => true ),
-      catchError( error => of(false) )
-    );
+        }),
+        map( resp => true ),
+        catchError( error => of(false) )
+      );
 
   }
 

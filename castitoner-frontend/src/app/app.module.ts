@@ -8,7 +8,10 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// MODULES
 import { SwiperModule } from 'swiper/angular';
+import { PipesModule } from './pipes/pipes.module';
+import { PagesModule } from './pages/pages.module';
 
 // COMPONENTS
 import { HomeComponent } from './home/home.component';
@@ -21,9 +24,6 @@ import { SearchComponent } from './search/search.component';
 import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
 import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
-import { PipesModule } from './pipes/pipes.module';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +37,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
     SearchComponent,
     ContactComponent,
     CartComponent,
-    BreadcrumsComponent,
-    DashboardComponent,
-    ProfileComponent
+    BreadcrumsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +46,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
     CommonModule,
     RouterModule,
     HttpClientModule,
-    PipesModule
+    PipesModule,
+    PagesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
