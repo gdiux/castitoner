@@ -147,7 +147,6 @@ export class HeaderComponent implements OnInit {
     this.auth2.attachClickHandler( element, {},
         (googleUser: any) => {
             const id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token);
             this.userService.loginGoogle( id_token )
               .subscribe();
 
