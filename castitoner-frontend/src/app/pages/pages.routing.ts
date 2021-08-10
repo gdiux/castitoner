@@ -7,19 +7,15 @@ import { AuthGuard } from '../guards/auth.guard';
 // COMPONENTS
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagesComponent } from './pages.component';
+import { PedidosComponent } from './pedidos/pedidos.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
     
-    { 
-        path: 'dashboard', 
-        component: PagesComponent,
-        canActivate: [AuthGuard],
-        children: [
-    
-          { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
-              
-        ]
-      },    
+
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data:{ titulo: 'Dashboard'} },
+      { path: 'perfil', component: ProfileComponent, canActivate: [AuthGuard], data:{ titulo: 'Perfil'} },
+      { path: 'pedidos', component: PedidosComponent, canActivate: [AuthGuard], data:{ titulo: 'Pedidos'} },  
 ];
 
 @NgModule({

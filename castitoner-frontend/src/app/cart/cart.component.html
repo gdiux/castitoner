@@ -35,7 +35,7 @@
                     </div>
                     <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 9rem;">
                         <label class="form-label" for="Cantidad1">Cantidad</label>
-                        <input class="form-control" type="number" id="Cantidad1" min="1" [value]="item.qty">
+                        <input class="form-control" readonly type="number" id="Cantidad1" min="1" [value]="item.qty">
                         <button (click)="eliminarProductoCarrito( i )" class="btn btn-link px-0 text-danger" type="button"><i class="ci-close-circle me-2"></i><span class="fs-sm">Remove</span></button>
                     </div>
                 </div>
@@ -54,59 +54,58 @@
                         <h2 class="h6 mb-3 pb-1">Subtotal</h2>
                         <h3 class="fw-normal"> {{ total | currency }} </h3>
                     </div>
-                    <div class="mb-3 mb-4">
-                        <label class="form-label mb-3" for="order-comments">
+
+                    <form *ngIf="login" id="newMesaForm" autocomplete="off" [formGroup]="pedidoForm" (ngSubmit)="crearPedido()">
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="name" readonly type="text" class="form-control text-capitalize" placeholder="Nombres">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="email" readonly type="text" class="form-control text-capitalize" placeholder="email">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="telefono" type="text" class="form-control text-capitalize" placeholder="Telefono">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="cedula" type="text" class="form-control text-capitalize" placeholder="Cedula">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="direccion" type="text" class="form-control text-capitalize" placeholder="Dirección">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="ciudad" type="text" class="form-control text-capitalize" placeholder="Ciudad">
+                        </div>
+
+                        <div class="col-auto mb-2">
+                            <input formControlName="departamento" type="text" class="form-control text-capitalize" placeholder="Departamento">
+                        </div>
+
+                        <div class="mb-3 mb-4">
+                            <label class="form-label mb-3" for="order-comments">
                             <span class="badge bg-info fs-xs me-2">Nota</span>
                             <span class="fw-medium">Comentarios adicional</span></label>
-                        <textarea class="form-control" rows="6" id="order-comments"></textarea>
-                    </div>
-                    <!-- <div class="accordion" id="order-options">
-                        <div class="accordion-item">
-                            <h3 class="accordion-header"><a class="accordion-button collapsed" href="#shipping-estimates" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="shipping-estimates">Shipping estimates</a></h3>
-                            <div class="accordion-collapse collapse" id="shipping-estimates" data-bs-parent="#order-options">
-                                <div class="accordion-body">
-                                    <form class="needs-validation" novalidate>
-                                        <div class="mb-3">
-                                            <select class="form-select" required>
-                                                <option value="">Choose your country</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Belgium">Belgium</option>
-                                                <option value="Canada">Canada</option>
-                                                <option value="Finland">Finland</option>
-                                                <option value="Mexico">Mexico</option>
-                                                <option value="New Zealand">New Zealand</option>
-                                                <option value="Switzerland">Switzerland</option>
-                                                <option value="United States">United States</option>
-                                                </select>
-                                            <div class="invalid-feedback">Please choose your country!</div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <select class="form-select" required>
-                                                <option value="">Choose your city</option>
-                                                <option value="Bern">Bern</option>
-                                                <option value="Brussels">Brussels</option>
-                                                <option value="Canberra">Canberra</option>
-                                                <option value="Helsinki">Helsinki</option>
-                                                <option value="Mexico City">Mexico City</option>
-                                                <option value="Ottawa">Ottawa</option>
-                                                <option value="Washington D.C.">Washington D.C.</option>
-                                                <option value="Wellington">Wellington</option>
-                                                </select>
-                                            <div class="invalid-feedback">Please choose your city!</div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <input class="form-control" type="text" placeholder="ZIP / Postal code" required>
-                                            <div class="invalid-feedback">Please provide a valid zip!</div>
-                                        </div>
-                                        <button class="btn btn-outline-primary d-block w-100" type="submit">Calculate shipping</button>
-                                    </form>
-                                </div>
-                            </div>
+                            <textarea formControlName="comentario" class="form-control" rows="4" id="order-comments"></textarea>
                         </div>
-                    </div> -->
-                    <a class="btn btn-primary btn-shadow d-block w-100 mt-4" href="checkout-details.html">
-                        <i class="ci-card fs-lg me-2"></i>Crear Pedido
-                    </a>
+
+                        <button type="submit" *ngIf="login" class="btn btn-primary btn-shadow d-block w-100 mt-4">
+                            <i class="ci-card fs-lg me-2"></i>Crear Pedido
+                        </button>
+                    </form>
+
+
+                    <div class="navbar-tool ms-2">
+                        <div id="my-signin2"></div>
+                    </div>
+
+                    <div class="text-danger mb-2">
+                        <!-- <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El numero de mesa es obligatorio</p> -->
+                    </div>
+
                 </div>
             </div>
         </aside>

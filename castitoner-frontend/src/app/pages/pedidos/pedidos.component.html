@@ -1,0 +1,197 @@
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+
+                    <li class="breadcrumb-item">
+                        <a class="text-nowrap" [routerLink]="['/']"><i class="ci-home"></i>Home
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item text-nowrap">
+                        <a href="#">Cuenta</a>
+                    </li>
+                    <li class="breadcrumb-item text-nowrap active" aria-current="page">Historial de pedidos</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+            <h1 class="h3 text-light mb-0">Mis pedidos</h1>
+        </div>
+    </div>
+</div>
+<div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+        <!-- Sidebar-->
+        <aside class="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
+            <div class="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
+
+                <div class="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
+                    <div class="d-md-flex align-items-center">
+                        <div class="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0" style="width: 6.375rem;">
+                            <img class="rounded-circle" src="{{user.img}}" alt="Susan Gardner">
+                        </div>
+                        <div class="ps-md-3">
+                            <h3 class="fs-base mb-0"> {{ user.name }} </h3><span class="text-accent fs-sm">{{ user.email }}</span>
+                        </div>
+                    </div><a class="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0" href="#account-menu" data-bs-toggle="collapse" aria-expanded="false"><i class="ci-menu me-2"></i>Account menu</a>
+                </div>
+
+                <div class="d-lg-block collapse" id="account-menu">
+
+                    <div class="bg-secondary px-4 py-3">
+                        <h3 class="fs-sm mb-0 text-muted">Dashboard</h3>
+                    </div>
+
+                    <ul class="list-unstyled mb-0">
+
+                        <li class="border-bottom mb-0">
+                            <a class="nav-link-style d-flex align-items-center px-4 py-3" [routerLink]="['/pedidos']" routerLinkActive="active">
+                                <i class="ci-bag opacity-60 me-2"></i> Mis pedidos
+                            </a>
+                        </li>
+
+                        <!-- <li class="border-bottom mb-0">
+                            <a class="nav-link-style d-flex align-items-center px-4 py-3" href="account-wishlist.html">
+                                <i class="ci-heart opacity-60 me-2"></i>Lista deseos
+                                <span class="fs-sm text-muted ms-auto">3</span>
+                            </a>
+                        </li> -->
+
+                    </ul>
+
+                    <div class="bg-secondary px-4 py-3">
+                        <h3 class="fs-sm mb-0 text-muted">Cuenta y configuraciones</h3>
+                    </div>
+
+                    <ul class="list-unstyled mb-0">
+                        <li class="border-bottom mb-0">
+                            <a class="nav-link-style d-flex align-items-center px-4 py-3" [routerLink]="['/perfil']" routerLinkActive="active">
+                                <i class="ci-user opacity-60 me-2"></i>Perfil
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </aside>
+        <!-- Content  -->
+        <section class="col-lg-8">
+
+            <!-- Toolbar-->
+            <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
+                <div class="d-flex align-items-center">
+                    <label class="d-none d-lg-block fs-sm text-light text-nowrap opacity-75 me-2" for="order-sort">Seleccionar:</label>
+                    <label class="d-lg-none fs-sm text-nowrap opacity-75 me-2" for="order-sort">Seleccionar:</label>
+
+                    <select class="form-select" id="order-sort">
+                        <option>Todo</option>
+                        <option>Pendiente</option>
+                        <option>Procesando</option>
+                        <option>Enviado</option>
+                        <option>Cancelado</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <!-- Orders list-->
+            <div class="table-responsive fs-md mb-4">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Pedido #</th>
+                            <th>Fecha</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let pedido of listaPedidos">
+                            <td class="py-3">
+                                <a class="nav-link-style fw-medium fs-sm" (click)="detallesPedido(pedido)" href="#order-details" data-bs-toggle="modal"> {{pedido.pedido}} </a>
+                            </td>
+                            <td class="py-3"> {{ pedido.fecha | date:"medium" }} </td>
+                            <td class="py-3">
+                                <span class="badge bg-info m-0"> {{ pedido.estado }} </span>
+                            </td>
+                            <td class="py-3"> {{ pedido.amount | currency }} </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Pagination-->
+            <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
+
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button [disabled]="desde === 0" (click)="cambiarPagina(-10)" class="page-link" href="#"><i class="ci-arrow-left me-2"></i>Atras</button>
+                    </li>
+                </ul>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button [disabled]="hasta > total" (click)="cambiarPagina(10)" class="page-link" href="#" aria-label="Next">Siguiente<i class="ci-arrow-right ms-2"></i></button >
+                    </li>
+                </ul>
+
+            </nav>
+
+        </section>
+    </div>
+</div>
+
+<!-- ===================================================================================================================
+MODAL DE PEDIDOS
+========================================================================================================== -->
+<div class="modal fade" id="order-details" >
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="pedidoD">Pedido - {{ pedidoD.pedido }}</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body pb-0" *ngIf="pedidoD">
+
+        <!-- Item-->
+        <div class="d-sm-flex justify-content-between mb-4 pb-3 pb-sm-2 border-bottom" *ngFor="let producto of carrito; let i = index">
+            <div class="d-sm-flex text-center text-sm-start">
+
+                <a class="d-inline-block flex-shrink-0 mx-auto" [routerLink]="['/producto', producto.product._id]" style="width: 10rem;">
+                    <img [src]="producto.img | imagen: 'products'" alt="Product">
+                </a>
+
+                <div class="ps-sm-4 pt-2">
+                    <h3 class="product-title fs-base mb-2">
+                        <a [routerLink]="['/producto', producto.product._id]"> {{ producto.product.name }} </a>
+                    </h3>
+                    <div class="fs-lg text-accent pt-2"> {{ producto.price | currency }} </div>
+                </div>
+            </div>
+            <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                <div class="text-muted mb-2">Quantity:</div> {{ producto.qty }}
+            </div>
+            <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                <div class="text-muted mb-2">Subtotal</div> {{ producto.qty * producto.price | currency }}
+            </div>
+        </div>
+        <!-- Item-->
+
+    </div>
+    <!-- Footer-->
+    <div class="modal-footer flex-wrap justify-content-between bg-secondary fs-md">
+        <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="fs-lg"> {{ amountP | currency}} </span></div>
+    </div>
+</div>
+</div>
+</div>
+<!-- ===================================================================================================================
+MODAL DE PEDIDOS
+========================================================================================================== -->

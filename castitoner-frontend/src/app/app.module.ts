@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 // MODULES
 import { SwiperModule } from 'swiper/angular';
 import { PipesModule } from './pipes/pipes.module';
@@ -47,7 +49,9 @@ import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
     RouterModule,
     HttpClientModule,
     PipesModule,
-    PagesModule
+    PagesModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

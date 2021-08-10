@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PedidosComponent } from './pedidos/pedidos.component';
 
 
 
@@ -17,15 +18,21 @@ import { ProfileComponent } from './profile/profile.component';
   declarations: [
     PagesComponent,
     DashboardComponent,
-    ProfileComponent
+    ProfileComponent,
+    PedidosComponent
   ],
   exports: [
     PagesComponent,
     DashboardComponent,
-    ProfileComponent
+    ProfileComponent,
+    PedidosComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
+    PipesModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }

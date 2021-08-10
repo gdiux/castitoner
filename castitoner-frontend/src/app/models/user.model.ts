@@ -7,15 +7,13 @@ export class User {
     constructor(
         public email: string,
         public name: string,
+        public cid: string,
         public img?: string,
-        public uid?: string,
-        public status?: boolean,
         public cedula?: string,
         public phone?: string,
-        public address?: string,
         public city?: string,
         public department?: string,
-        public zip?: string,
+        public address?: string,
     ){}
 
     /** ================================================================

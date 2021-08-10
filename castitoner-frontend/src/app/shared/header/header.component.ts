@@ -8,6 +8,7 @@ import { DepartmentService } from '../../services/department.service';
 import { CarritoService } from '../../services/carrito.service';
 import { Carrito } from '../../models/carrito.model';
 import { UserService } from '../../services/user.service';
+import { User } from 'src/app/models/user.model';
 
 declare const gapi:any;
 
@@ -18,13 +19,21 @@ declare const gapi:any;
   ]
 })
 export class HeaderComponent implements OnInit {
+
+  public user!: User;
   
   constructor(  private departmentService: DepartmentService,
                 private router: Router,
                 private carritoService: CarritoService,
-                private userService: UserService) {}
+                private userService: UserService) {
+
+
+                }
 
   ngOnInit(): void {
+
+    // CARGAR USUARIO
+    this.cargarUser();
 
     // CARGAR DEPARTAMENTOS
     this.cargarDepartamento();
@@ -32,6 +41,38 @@ export class HeaderComponent implements OnInit {
     // RENDERIZAR BOTON DE GOOGLE
     this.renderButton();
     
+  }
+  /** ================================================================
+   *  CARGAR USUARIO
+  ==================================================================== */
+  public login: boolean = false;
+  cargarUser(){
+
+    if (!localStorage.getItem('token')) {
+      this.login = false;
+      return;
+
+    }else{
+      this.login = true;
+      this.userService.validateToken()
+      .subscribe( resp => {
+        
+        if (resp) {
+          this.user = this.userService.user;
+          
+        }else{
+
+          localStorage.removeItem('token');
+          window.location.reload();
+
+        }
+        
+
+      });
+    }
+
+
+
   }
 
   /** ================================================================
@@ -121,15 +162,19 @@ export class HeaderComponent implements OnInit {
   ==================================================================== */
   public auth2: any;
   renderButton() {
-    gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-    });
 
-    this.startApp();
+    if (!this.login) {      
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 40,
+        'height': 40,
+        'longtitle': true,
+        'theme': 'dark',
+      });
+  
+      this.startApp();
+    }
+
 
   }
 
@@ -148,11 +193,28 @@ export class HeaderComponent implements OnInit {
         (googleUser: any) => {
             const id_token = googleUser.getAuthResponse().id_token;
             this.userService.loginGoogle( id_token )
-              .subscribe();
+              .subscribe( resp => {
+
+                this.cargarUser();
+                
+                window.location.reload();
+                
+
+              });
 
         }, (error: any) => {
             alert(JSON.stringify(error, undefined, 2));
         });
+  }
+
+  /** ================================================================
+   *  LOGOUT
+  ==================================================================== */
+  logout(){
+
+    localStorage.removeItem('token');
+    window.location.reload();
+
   }
 
 }

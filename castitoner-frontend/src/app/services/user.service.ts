@@ -10,10 +10,9 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 // MODELS
+import { User } from '../models/user.model';
 
 import Swal from 'sweetalert2';
-
-import { User } from '../models/user.model';
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -23,7 +22,7 @@ declare const gapi: any;
 })
 export class UserService {
 
-  public user: User | undefined;
+  public user!: User;
   public auth2: any;
 
   constructor(  private http: HttpClient,
@@ -68,29 +67,20 @@ export class UserService {
     return this.http.get(`${base_url}/login/renew/client`, this.headers)
     
       .pipe(
-        tap( (resp: any) => {
-          
-          const {name, img, cid, status} = resp.usuario;
+        tap( (resp: any) => {          
 
-          this.user = new User(name, img, cid, status);
+          const { email, name, cid, img, cedula, phone, city, department, address } = resp.client;
           
-          console.log(this.user);          
-
+          this.user = new User( email, name, cid, img, cedula, phone, city, department, address);
+          
           localStorage.setItem('token', resp.token);
 
         }),
         map( resp => true ),
+
         catchError( error => of(false) )
+
       );
-
-  }
-
-  /** ================================================================
-   *   CREATE USER
-  ==================================================================== */
-  createUser( formData: any ){
-      
-    return this.http.post(`${base_url}/users`, formData, this.headers);
 
   }
 
@@ -99,7 +89,7 @@ export class UserService {
   ==================================================================== */
   updateUser(formData: any, id: string){
 
-    return this.http.put(`${base_url}/users/${id}`, formData, this.headers);
+    return this.http.put(`${base_url}/clients/${id}`, formData, this.headers);
 
   } 
 
@@ -126,9 +116,7 @@ export class UserService {
     return this.http.post(`${base_url}/login/google`, {token})
                       .pipe(
                         tap( (resp: any) => {
-                          localStorage.setItem('token', resp.token);
-                          console.log(resp.token);
-                          
+                          localStorage.setItem('token', resp.token);                          
                         }),
                         catchError( error => of(false) )
                       );

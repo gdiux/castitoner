@@ -24,6 +24,7 @@ export class Product {
         public img: string | 'no-image',
         public department: _departamento,
         public pid: string,
+        public _id: string,
         public kit?: Kit[],
         public stock?: number,
         public min?: number,
@@ -37,7 +38,6 @@ export class Product {
         public visibility?: boolean,
         public low?: boolean,
         public out?: boolean,
-        public _id?: string
     ){}
 
     /** ================================================================
