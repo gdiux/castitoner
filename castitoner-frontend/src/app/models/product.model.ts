@@ -38,6 +38,7 @@ export class Product {
         public visibility?: boolean,
         public low?: boolean,
         public out?: boolean,
+        public description?: string
     ){}
 
     /** ================================================================
