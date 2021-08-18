@@ -136,7 +136,7 @@
 <div class="container pt-lg-2 pb-5 mb-md-3">
     <h2 class="h3 text-center pb-4">Te puede interesar</h2>
 
-    <swiper [slidesPerView]="4" [autoplay]="true" [pagination]="{ clickable: true }" [spaceBetween]="50">
+    <swiper [slidesPerView]="4" [autoplay]="true" [pagination]="{ clickable: true }" [spaceBetween]="50" [config]="swiperConfig">
 
         <ng-template swiperSlide *ngFor="let producto of productos">
             <div class="card product-card card-static">

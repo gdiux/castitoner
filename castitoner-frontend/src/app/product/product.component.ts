@@ -47,8 +47,12 @@ export class ProductComponent implements OnInit {
       
       this.cargarProducto(id);
       
-    });
+    });   
+  
 
+    /** ================================================================
+     *  LOCALSTORAGE
+    ==================================================================== */
     this.carrtioServicio = this.carritoService.carrito;
 
     // CARRITO LOCAL
@@ -61,6 +65,24 @@ export class ProductComponent implements OnInit {
 
     this.carrtioServicio = this.carrito;
 
+  }
+
+  /** ================================================================
+     *  SWIPER
+    ==================================================================== */
+  public swiperConfig: any = {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      breakpoints: {
+          990: {
+              slidesPerView: 4,
+              spaceBetween: 50
+          },
+          640: {
+            slidesPerView: 3,
+            spaceBetween: 40
+        }
+      }
   }
 
   /** ================================================================
