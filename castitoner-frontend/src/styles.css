@@ -4,3 +4,9 @@
 .btn-link-depar {
     background: rgba(0, 0, 0, 0.2);
 }
+
+.waybox-button {
+    position: absolute;
+    left: 78vw;
+    margin-top: -5.8rem;
+}

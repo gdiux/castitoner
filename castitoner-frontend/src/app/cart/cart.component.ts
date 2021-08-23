@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+
+import {UUID} from 'uuid-generator-ts';
 
 // SERVICES
 import { PedidosService } from '../services/pedidos.service';
@@ -9,6 +11,10 @@ import { Carrito } from '../models/carrito.model';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import Swal from 'sweetalert2';
+
+import { environment } from '../../environments/environment';
+
+
 
 declare const gapi:any;
 
@@ -20,9 +26,16 @@ declare const gapi:any;
 })
 export class CartComponent implements OnInit {
 
+  public url!:string;
+
   constructor(  private userService: UserService,
                 private fb: FormBuilder,
-                private pedidosService: PedidosService) { }
+                private pedidosService: PedidosService,
+                private elementRef:ElementRef) {
+
+                  this.url = environment.local_url;
+
+                }
 
   public login:boolean = false;
   public user!: User;
@@ -37,12 +50,45 @@ export class CartComponent implements OnInit {
     if ( localStorage.getItem('token') ) {
       this.login = true;      
     }
+
+    this.uuid = new UUID();
     
   }
 
   /** ================================================================
+   *  WOMPI
+  ==================================================================== */
+  public uuid!: any;
+  wompi(){
+
+    if (this.total === 0) {
+
+      Swal.fire('Atención', 'No tienes ningun producto seleccionado', 'info');
+      return;
+      
+    }
+
+    console.log(this.uuid.getDashFreeUUID());
+    
+   
+
+    let s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "https://checkout.wompi.co/widget.js";
+    s.setAttribute('data-render', 'button');
+    s.setAttribute('data-public-key', 'pub_prod_6mVGKjbJuRpL2SLeN9e8D41Z12sqAoGI');
+    s.setAttribute('data-currency', 'COP');
+    s.setAttribute('data-redirect-url', `${this.url}/cart`);
+    s.setAttribute('data-amount-in-cents', `${String(this.total)}00`);
+    s.setAttribute('data-reference', this.uuid.getDashFreeUUID());
+
+    this.elementRef.nativeElement.appendChild(s);
+
+  }
+  /** ================================================================
    *  CARGAR USUARIO
   ==================================================================== */
+  public updateInfo: boolean = false;
   cargarUser(){
 
     if (!localStorage.getItem('token')) {
@@ -52,11 +98,16 @@ export class CartComponent implements OnInit {
 
     }else{
       this.login = true;
+
       this.userService.validateToken()
       .subscribe( resp => {
         
         if (resp) {
-          this.user = this.userService.user;                              
+          this.user = this.userService.user;
+          
+          console.log(this.user);
+          
+          
         }else{
 
           localStorage.removeItem('token');
@@ -67,8 +118,7 @@ export class CartComponent implements OnInit {
         this.verCarrito();
         
       });
-    }
-    
+    }    
 
   }
 
@@ -171,6 +221,8 @@ export class CartComponent implements OnInit {
       this.actualizarForm();
 
     }
+
+    this.wompi();
 
   }
 
