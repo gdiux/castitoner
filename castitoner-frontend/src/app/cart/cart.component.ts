@@ -2,16 +2,17 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import Swal from 'sweetalert2';
 import {UUID} from 'uuid-generator-ts';
 
 // SERVICES
 import { PedidosService } from '../services/pedidos.service';
+import { WompiService } from '../services/wompi.service';
+import { UserService } from '../services/user.service';
 
 // MODELS
 import { Carrito } from '../models/carrito.model';
-import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
-import Swal from 'sweetalert2';
 
 import { environment } from '../../environments/environment';
 
@@ -33,7 +34,9 @@ export class CartComponent implements OnInit {
                 private fb: FormBuilder,
                 private pedidosService: PedidosService,
                 private activatedRoute: ActivatedRoute,
-                private elementRef:ElementRef) {
+                private router: Router,
+                private elementRef:ElementRef,
+                private wompiService: WompiService) {
 
                   this.url = environment.local_url;
 
@@ -44,23 +47,10 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.params.subscribe( ({referencia}) => {
-      
-      this.referencia = referencia;
-
-      this.activatedRoute.queryParams.subscribe( ({id}) => {
-      
-        this.transaccion = id;
-        
-        if (id) {
-          this.aprobado = true;
-        }
-        
-      });      
-      
-    });
-
+    // CARGAR USUARIOS
     this.cargarUser();    
+
+        
 
     // RENDERIZAR BOTON DE GOOGLE
     // this.renderButton();
@@ -77,9 +67,9 @@ export class CartComponent implements OnInit {
    *  WOMPI
   ==================================================================== */
   public uuid!: any;
-  public aprobado: boolean = false;
+  public transaction: boolean = false;
   public referencia!:string;
-  public transaccion!: string;
+  public transaccion: string = '0';
   wompi(){
 
     if (this.total === 0) {
@@ -88,20 +78,57 @@ export class CartComponent implements OnInit {
       return;
       
     }
+    
+    // SI NO ESTA APROBADO
+    if (!this.transaction) {      
+      let s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = "https://checkout.wompi.co/widget.js";
+      s.setAttribute('data-render', 'button');
+      s.setAttribute('data-public-key', 'pub_prod_6mVGKjbJuRpL2SLeN9e8D41Z12sqAoGI');
+      s.setAttribute('data-currency', 'COP');
+      s.setAttribute('data-redirect-url', `${this.url}/cart/${this.uuid.getDashFreeUUID()}`);
+      s.setAttribute('data-amount-in-cents', `${String(this.total)}00`);
+      s.setAttribute('data-reference', this.uuid.getDashFreeUUID());
+  
+      this.elementRef.nativeElement.appendChild(s);
+    }
 
-    let s = document.createElement("script");
-    s.type = "text/javascript";
-    s.src = "https://checkout.wompi.co/widget.js";
-    s.setAttribute('data-render', 'button');
-    s.setAttribute('data-public-key', 'pub_prod_6mVGKjbJuRpL2SLeN9e8D41Z12sqAoGI');
-    s.setAttribute('data-currency', 'COP');
-    s.setAttribute('data-redirect-url', `${this.url}/cart/${this.uuid.getDashFreeUUID()}`);
-    s.setAttribute('data-amount-in-cents', `${String(this.total)}00`);
-    s.setAttribute('data-reference', this.uuid.getDashFreeUUID());
-
-    this.elementRef.nativeElement.appendChild(s);
 
   }
+
+  /** ================================================================
+   *  CARGAR TRANSACCION DE WOMPI ID
+  ==================================================================== */
+  public estado: string = '';
+  public data:any;
+  cargarTransaccion(id:string){
+
+    if (!this.transaction) {   
+
+    this.wompiService.cargarTransaccionId(this.transaccion)
+        .subscribe( ({data}) => {   
+
+          if (data.reference !== this.referencia) {
+            Swal.fire('Atención', 'La referencia no coincide con el numero de transacción', 'warning');
+            this.router.navigateByUrl('/pedidos');
+            return;
+          }         
+          
+          this.transaction = true;
+
+          this.data = data;
+
+          this.crearPedido();
+          
+
+        }, (err) => { 
+          Swal.fire('Error', err.error.error.reason, 'error');
+          this.router.navigateByUrl('/pedidos');
+        });
+    }
+  }
+
   /** ================================================================
    *  CARGAR USUARIO
   ==================================================================== */
@@ -121,6 +148,21 @@ export class CartComponent implements OnInit {
         
         if (resp) {
           this.user = this.userService.user;
+
+          // OBTENER TRANSACCION
+          this.activatedRoute.queryParams.subscribe( ({id}) => {
+            
+            this.transaccion = id;
+            if (this.transaccion) {        
+              this.cargarTransaccion(id);
+
+              // OBTENER REFERENCIA
+              this.activatedRoute.params.subscribe(({referencia}) => {          
+                this.referencia = referencia;
+              });
+            }
+
+          });
           
         }else{
 
@@ -177,7 +219,6 @@ export class CartComponent implements OnInit {
                 
                 window.location.reload();
                 
-
               });
 
         }, (error: any) => {
@@ -274,7 +315,11 @@ export class CartComponent implements OnInit {
     departamento: ['', [Validators.required]],
     comentario: [''],
     products: ['', [Validators.required]],
-    amount: ['', [Validators.required, Validators.min(1)]]
+    amount: ['', [Validators.required, Validators.min(1)]],
+    paystatus: [''],
+    referencia: [''],
+    transaccion: [''],
+    status: [true]
   });
 
   crearPedido(){    
@@ -284,6 +329,15 @@ export class CartComponent implements OnInit {
     if (this.pedidoForm.invalid) {
       Swal.fire('Atención', 'Debes de llenar todos los campos y debes de tener minimo 1 producto en el carrito', 'info')
       return;
+    }
+
+    this.pedidoForm.value.paystatus = this.data.status;
+    this.pedidoForm.value.referencia = this.referencia;
+    this.pedidoForm.value.transaccion = this.transaccion;
+    this.pedidoForm.value.status = true;
+
+    if (this.estado !== 'APPROVED') {
+      this.pedidoForm.value.status = false;
     }
     
     this.pedidosService.createPedidos(this.pedidoForm.value)

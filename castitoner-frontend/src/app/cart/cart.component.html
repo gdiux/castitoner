@@ -50,11 +50,23 @@
         <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
             <div class="bg-white rounded-3 shadow-lg p-4">
                 <div class="py-2 px-xl-2">
-                    <div *ngIf="aprobado" class="text-center mb-4 pb-3 border-bottom">
-                        <i class="h1 text-success  ci-check-circle"></i>
-                        <p class="mb-0 text-success text-wrapp"> Pago Aprobado, se ha creado el pedido con exito!</p>
-                        <p class="mb-0 text-wrapp"> <small>* referencia: {{referencia}}</small></p>
-                        <p class="mb-0 text-wrapp"> <small>* transacción: {{transaccion}}</small></p>
+                    <div *ngIf="transaction" class="text-center mb-4 pb-3 border-bottom">
+
+                        <div *ngIf="data.status === 'APPROVED' ">
+                            <i class="h1 text-success  ci-check"></i>
+                            <p class="mb-0 text-success text-wrapp"> Pago Aprobado, se ha creado el pedido con exito!</p>
+                        </div>
+
+                        <div *ngIf="data.status === 'VOIDED' ">
+                            <i class="h1 text-info  ci-reply"></i>
+                            <p class="mb-0 text-info text-wrapp"> Pago Anulado, se ha cancelado el pedido con exito!</p>
+                        </div>
+
+                        <div *ngIf="data.status === 'DECLINED' ">
+                            <i class="h1 text-danger  ci-close"></i>
+                            <p class="mb-0 text-danger text-wrapp"> Pago Declinado, se ha cancelado el pedido con exito!</p>
+                        </div>
+
 
                     </div>
                     <div class="text-center mb-4 pb-3 border-bottom">
@@ -92,18 +104,21 @@
                             <input formControlName="departamento" type="text" class="form-control text-capitalize" placeholder="Departamento">
                         </div>
 
-                        <div class="mb-3 mb-4">
+                        <!-- <div class="mb-3 mb-4">
                             <label class="form-label mb-3" for="order-comments">
                             <span class="badge bg-info fs-xs me-2">Nota</span>
                             <span class="fw-medium">Comentarios adicional</span></label>
                             <textarea formControlName="comentario" class="form-control" rows="4" id="order-comments"></textarea>
-                        </div>
+                        </div> -->
 
-                        <h4 class="mb-1">Paga con</h4>
-                        <p class="mb-0 ps-2 text-muted"><small>* Tarjeta de credito </small> </p>
-                        <p class="mb-0 ps-2 text-muted"><small>* Nequi </small> </p>
-                        <p class="mb-0 ps-2 text-muted"><small>* Pse </small> </p>
-                        <p class="mb-0 ps-2 text-muted"><small>* Bancolombia </small> </p>
+                        <div *ngIf="!transaction">
+
+                            <h4 class="mb-1">Paga con</h4>
+                            <p class="mb-0 ps-2 text-muted"><small>* Tarjeta de credito </small> </p>
+                            <p class="mb-0 ps-2 text-muted"><small>* Nequi </small> </p>
+                            <p class="mb-0 ps-2 text-muted"><small>* Pse </small> </p>
+                            <p class="mb-0 ps-2 text-muted"><small>* Bancolombia </small> </p>
+                        </div>
 
 
                         <form>
