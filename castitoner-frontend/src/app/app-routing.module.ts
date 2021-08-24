@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'search/:tipo/:termino', component: SearchComponent, data:{ titulo: 'Buscador'} },
   { path: 'contac', component: ContactComponent, data:{ titulo: 'Contacto'} },
   { path: 'cart', component: CartComponent, data:{ titulo: 'Mi Carrito'} },
+  { path: 'cart/:referencia', component: CartComponent, data:{ titulo: 'Mi Carrito'} },
   { path: '**', component: NopagefoundComponent },
 
   { path: 'dashboard', redirectTo: '/dashboard', pathMatch: 'full' },

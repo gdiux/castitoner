@@ -50,6 +50,13 @@
         <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
             <div class="bg-white rounded-3 shadow-lg p-4">
                 <div class="py-2 px-xl-2">
+                    <div *ngIf="aprobado" class="text-center mb-4 pb-3 border-bottom">
+                        <i class="h1 text-success  ci-check-circle"></i>
+                        <p class="mb-0 text-success text-wrapp"> Pago Aprobado, se ha creado el pedido con exito!</p>
+                        <p class="mb-0 text-wrapp"> <small>* referencia: {{referencia}}</small></p>
+                        <p class="mb-0 text-wrapp"> <small>* transacción: {{transaccion}}</small></p>
+
+                    </div>
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="h6 mb-3 pb-1">Subtotal</h2>
                         <h3 class="fw-normal"> {{ total | currency }} </h3>

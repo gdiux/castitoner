@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import {UUID} from 'uuid-generator-ts';
 
@@ -31,6 +32,7 @@ export class CartComponent implements OnInit {
   constructor(  private userService: UserService,
                 private fb: FormBuilder,
                 private pedidosService: PedidosService,
+                private activatedRoute: ActivatedRoute,
                 private elementRef:ElementRef) {
 
                   this.url = environment.local_url;
@@ -41,6 +43,22 @@ export class CartComponent implements OnInit {
   public user!: User;
 
   ngOnInit(): void {
+
+    this.activatedRoute.params.subscribe( ({referencia}) => {
+      
+      this.referencia = referencia;
+
+      this.activatedRoute.queryParams.subscribe( ({id}) => {
+      
+        this.transaccion = id;
+        
+        if (id) {
+          this.aprobado = true;
+        }
+        
+      });      
+      
+    });
 
     this.cargarUser();    
 
@@ -59,6 +77,9 @@ export class CartComponent implements OnInit {
    *  WOMPI
   ==================================================================== */
   public uuid!: any;
+  public aprobado: boolean = false;
+  public referencia!:string;
+  public transaccion!: string;
   wompi(){
 
     if (this.total === 0) {
@@ -68,17 +89,13 @@ export class CartComponent implements OnInit {
       
     }
 
-    console.log(this.uuid.getDashFreeUUID());
-    
-   
-
     let s = document.createElement("script");
     s.type = "text/javascript";
     s.src = "https://checkout.wompi.co/widget.js";
     s.setAttribute('data-render', 'button');
     s.setAttribute('data-public-key', 'pub_prod_6mVGKjbJuRpL2SLeN9e8D41Z12sqAoGI');
     s.setAttribute('data-currency', 'COP');
-    s.setAttribute('data-redirect-url', `${this.url}/cart`);
+    s.setAttribute('data-redirect-url', `${this.url}/cart/${this.uuid.getDashFreeUUID()}`);
     s.setAttribute('data-amount-in-cents', `${String(this.total)}00`);
     s.setAttribute('data-reference', this.uuid.getDashFreeUUID());
 
@@ -104,9 +121,6 @@ export class CartComponent implements OnInit {
         
         if (resp) {
           this.user = this.userService.user;
-          
-          console.log(this.user);
-          
           
         }else{
 
