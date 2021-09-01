@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 
 // MODELS
 import { User } from '../models/user.model';
+import { Wompi } from '../models/wompi.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +32,8 @@ export class WompiService {
     const endPoint = `https://production.wompi.co/v1/transactions`;
     return this.http.get<any>(`${endPoint}/${id}`)
             .pipe(
-              map( resp => {
-                return resp;
+              map( (resp:{data: Wompi}) => {
+                return resp.data;
               })
             );
   }

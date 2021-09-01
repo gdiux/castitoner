@@ -17,42 +17,35 @@
 </div>
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
-
-
         <!-- List of items-->
         <section class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center pt-3 pb-4 pb-sm-5 mt-1">
                 <h2 class="h6 text-light mb-0">Productos</h2><a class="btn btn-outline-primary btn-sm ps-2" [routerLink]="['/search']"><i class="ci-arrow-left me-2"></i>Continuar comprando</a>
             </div>
             <!-- Item-->
+            <ng-container *ngIf="carrito.length > 0">
 
-            <div class="col-12 overflow-auto px-2 scroll-cart" style="max-height: 550px;">
-                <ng-container *ngIf="carrito.length > 0">
-
-                    <div *ngFor="let item of carrito; let i = index" class="d-sm-flex justify-content-between align-items-center my-2 pb-3 border-bottom ">
-                        <div class="d-block d-sm-flex align-items-center text-center text-sm-start">
-                            <a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" [routerLink]="['/product', item.product]"><img [src]="item.img || 'no-image' | imagen: 'products'" width="160" alt="Product"></a>
-                            <div class="pt-2">
-                                <h3 class="product-title fs-base mb-2"><a [routerLink]="['/product', item.product]"> {{ item.name }} </a></h3>
-                                <div class="fs-lg text-accent pt-2"> {{ item.price | currency }} </div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 9rem;">
-                            <label class="form-label" for="Cantidad1">Cantidad</label>
-                            <input class="form-control" readonly type="number" id="Cantidad1" min="1" [value]="item.qty">
-                            <button (click)="eliminarProductoCarrito( i )" class="btn btn-link px-0 text-danger" type="button"><i class="ci-close-circle me-2"></i><span class="fs-sm">Remove</span></button>
+                <div *ngFor="let item of carrito; let i = index" class="d-sm-flex justify-content-between align-items-center my-2 pb-3 border-bottom">
+                    <div class="d-block d-sm-flex align-items-center text-center text-sm-start">
+                        <a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" [routerLink]="['/product', item.product]"><img [src]="item.img || 'no-image' | imagen: 'products'" width="160" alt="Product"></a>
+                        <div class="pt-2">
+                            <h3 class="product-title fs-base mb-2"><a [routerLink]="['/product', item.product]"> {{ item.name }} </a></h3>
+                            <div class="fs-lg text-accent pt-2"> {{ item.price | currency }} </div>
                         </div>
                     </div>
+                    <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 9rem;">
+                        <label class="form-label" for="Cantidad1">Cantidad</label>
+                        <input class="form-control" readonly type="number" id="Cantidad1" min="1" [value]="item.qty">
+                        <button (click)="eliminarProductoCarrito( i )" class="btn btn-link px-0 text-danger" type="button"><i class="ci-close-circle me-2"></i><span class="fs-sm">Remove</span></button>
+                    </div>
+                </div>
 
-                </ng-container>
-
-            </div>
+            </ng-container>
 
 
 
             <button (click)="verCarrito()" class="btn btn-outline-accent d-block w-100 mt-4" type="button"><i class="ci-loading fs-base me-2"></i>Actualizar Carrito</button>
         </section>
-
         <!-- Sidebar-->
         <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
             <div class="bg-white rounded-3 shadow-lg p-4">
@@ -81,39 +74,34 @@
                         <h3 class="fw-normal"> {{ total | currency }} </h3>
                     </div>
 
-                    <form *ngIf="login" autocomplete="off" [formGroup]="upUserForm" (ngSubmit)="actualizarUsuario()">
+                    <form *ngIf="login" id="newMesaForm" autocomplete="off" [formGroup]="pedidoForm" (ngSubmit)="crearPedido()">
 
                         <div class="col-auto mb-2">
                             <input formControlName="name" readonly type="text" class="form-control text-capitalize" placeholder="Nombres">
-                            <label for=""> <small>* obligatorio</small> </label>
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="cedula" type="text" class="form-control text-capitalize" placeholder="Cedula">
-                            <label for=""> <small>* obligatorio</small> </label>
+                            <input formControlName="email" readonly type="text" class="form-control text-capitalize" placeholder="email">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="phone" type="text" class="form-control text-capitalize" placeholder="Telefono">
-                            <label for=""> <small>* obligatorio</small> </label>
+                            <input formControlName="telefono" type="text" class="form-control text-capitalize" placeholder="Telefono">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input readonly formControlName="email" readonly type="text" class="form-control" placeholder="Email">
-                            <label for=""> <small>* obligatorio</small> </label>
+                            <input formControlName="cedula" type="text" class="form-control text-capitalize" placeholder="Cedula">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="address" type="text" class="form-control text-capitalize" placeholder="Dirección">
-                            <label for=""> <small>* obligatorio</small> </label>
+                            <input formControlName="direccion" type="text" class="form-control text-capitalize" placeholder="Dirección">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="city" type="text" class="form-control text-capitalize" placeholder="Ciudad">
+                            <input formControlName="ciudad" type="text" class="form-control text-capitalize" placeholder="Ciudad">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="department" type="text" class="form-control text-capitalize" placeholder="Departamento">
+                            <input formControlName="departamento" type="text" class="form-control text-capitalize" placeholder="Departamento">
                         </div>
 
                         <!-- <div class="mb-3 mb-4">
@@ -132,14 +120,14 @@
                             <p class="mb-0 ps-2 text-muted"><small>* Bancolombia </small> </p>
                         </div>
 
-                        <button type="submit" *ngIf="login || !user.valid" class="btn btn-primary btn-shadow d-block w-100 mt-4">
-                            <i class="ci-delivery fs-lg me-2"></i>Confirmar Datos
+
+                        <form>
+                            <div #s id="s" class="s col-12"></div>
+                        </form>
+
+                        <button type="submit" *ngIf="login" class="btn btn-primary btn-shadow d-block w-100 mt-4">
+                            <i class="ci-card fs-lg me-2"></i>Crear Pedido
                         </button>
-
-                    </form>
-
-                    <form>
-                        <div #s class="col-12"></div>
                     </form>
 
 
@@ -147,18 +135,12 @@
                         <div id="my-signin2"></div>
                     </div>
 
-                    <div class="row">
-                        <div class="text-danger mb-2">
-                            <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">- La cedula es obligatoria</p>
-                            <p *ngIf="campoValido('phone')" class="mb-1 animated fadeIn">- El telefono es obligatorio</p>
-                            <p *ngIf="campoValido('address')" class="mb-1 animated fadeIn">- La direccion es obligatoria</p>
-                        </div>
+                    <div class="text-danger mb-2">
+                        <!-- <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El numero de mesa es obligatorio</p> -->
                     </div>
 
                 </div>
             </div>
         </aside>
-        <!-- Sidebar-->
-
     </div>
 </div>

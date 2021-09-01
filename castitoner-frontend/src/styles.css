@@ -5,8 +5,54 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
+.scroll-cart {
+    margin: 2rem auto;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 0 1rem;
+}
+
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.scroll-cart::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.scroll-cart::-webkit-scrollbar:vertical {
+    width: 5px;
+}
+
+.scroll-cart::-webkit-scrollbar-button:increment,
+.scroll-cart::-webkit-scrollbar-button {
+    display: none;
+}
+
+.scroll-cart::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.scroll-cart::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.scroll-cart::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #f1f2f3;
+}
+
 .waybox-button {
     position: absolute;
     left: 78vw;
     margin-top: -5.8rem;
+}
+
+@media only screen and (max-width: 450px) {
+    /* For tablets: */
+    .waybox-button {
+        position: absolute;
+        left: 50vw!important;
+        margin-top: -5.8rem;
+    }
 }

@@ -8,6 +8,7 @@ export class User {
         public email: string,
         public name: string,
         public cid: string,
+        public valid: boolean,
         public img?: string,
         public cedula?: string,
         public phone?: string,

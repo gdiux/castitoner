@@ -26,6 +26,7 @@ import { SearchComponent } from './search/search.component';
 import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
 import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
+import { ValidarComponent } from './validar/validar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
     SearchComponent,
     ContactComponent,
     CartComponent,
-    BreadcrumsComponent
+    BreadcrumsComponent,
+    ValidarComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,7 @@ import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
     PipesModule,
     PagesModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

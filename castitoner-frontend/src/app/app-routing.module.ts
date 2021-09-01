@@ -10,8 +10,10 @@ import { ProductComponent } from './product/product.component';
 import { SearchComponent } from './search/search.component';
 import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
+import { ValidarComponent } from './validar/validar.component';
 
 const routes: Routes = [
+
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data:{ titulo: 'Inicio'} },
   { path: 'about', component: AboutComponent, data:{ titulo: 'Nosotros'} },
@@ -19,7 +21,7 @@ const routes: Routes = [
   { path: 'search/:tipo/:termino', component: SearchComponent, data:{ titulo: 'Buscador'} },
   { path: 'contac', component: ContactComponent, data:{ titulo: 'Contacto'} },
   { path: 'cart', component: CartComponent, data:{ titulo: 'Mi Carrito'} },
-  { path: 'cart/:referencia', component: CartComponent, data:{ titulo: 'Mi Carrito'} },
+  { path: 'validar/:referencia', component: ValidarComponent, data:{ titulo: 'Validar Compra'} },
   { path: '**', component: NopagefoundComponent },
 
   { path: 'dashboard', redirectTo: '/dashboard', pathMatch: 'full' },

@@ -33,9 +33,9 @@ export class ProfileComponent implements OnInit {
       address: this.user.address || '',
       city: this.user.city || '',
       department: this.user.department || '',
+      valid: this.user.valid
 
-    });
-    
+    });    
 
   }
 
@@ -54,7 +54,8 @@ export class ProfileComponent implements OnInit {
     email: ['', [Validators.required]],
     address: [''],
     city: [''],
-    department: ['']
+    department: [''],
+    valid: [false]
 
   });
 
@@ -66,8 +67,7 @@ export class ProfileComponent implements OnInit {
           Swal.fire('Estupendo', 'Se ha actualizado tu perfil exitosamente', 'success');
 
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error') });
-
-
+        
   }
 
 }

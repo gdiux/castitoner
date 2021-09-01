@@ -195,10 +195,12 @@ export class HeaderComponent implements OnInit {
             this.userService.loginGoogle( id_token )
               .subscribe( resp => {
 
+                console.log(resp);
+                
+
                 this.cargarUser();
                 
                 window.location.reload();
-                
 
               });
 
