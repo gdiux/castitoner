@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Department } from 'src/app/models/department.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
+// MODELS
+import { Categoria } from '../../models/categoria.model';
+import { Carrito } from '../../models/carrito.model';
+import { User } from 'src/app/models/user.model';
+
 // SERVICES
 import { DepartmentService } from '../../services/department.service';
 import { CarritoService } from '../../services/carrito.service';
-import { Carrito } from '../../models/carrito.model';
 import { UserService } from '../../services/user.service';
-import { User } from 'src/app/models/user.model';
+import { CategoriaService } from '../../services/categorias.service';
 
 declare const gapi:any;
 
@@ -25,7 +29,8 @@ export class HeaderComponent implements OnInit {
   constructor(  private departmentService: DepartmentService,
                 private router: Router,
                 private carritoService: CarritoService,
-                private userService: UserService) {
+                private userService: UserService,
+                private categoriaService: CategoriaService) {
 
 
                 }
@@ -35,6 +40,9 @@ export class HeaderComponent implements OnInit {
     // CARGAR USUARIO
     this.cargarUser();
 
+    // CARGAR CATEGORIAS
+    this.cargarCategorias();
+    
     // CARGAR DEPARTAMENTOS
     this.cargarDepartamento();
 
@@ -76,6 +84,23 @@ export class HeaderComponent implements OnInit {
   }
 
   /** ================================================================
+   *  CARGAR CATEGORIAS
+  ==================================================================== */
+  public categorias: any[] = [];
+  cargarCategorias(){
+
+    this.categoriaService.loadCategoria()
+        .subscribe(({ total, categorias }) =>{
+
+          this.categorias = categorias;          
+
+        }, (err) => {  }
+        
+        )
+
+  }
+
+  /** ================================================================
    *  CARGAR DEPARTAMENTOS
   ==================================================================== */
   public departamentos: Department[] = [];
@@ -95,11 +120,15 @@ export class HeaderComponent implements OnInit {
   /** ================================================================
    *  BUSCAR PRODUCTOS
   ==================================================================== */
+  // @ViewChild('navbarCollapse') navbarCollapse: ElementRef | undefined;
   buscarProductos(termino:string){
 
     if (termino.length === 0) {
       return;
     }
+
+    let navbar = document.getElementById("navbarCollapse");
+    navbar?.classList.remove('show');
 
     // INGRESAR
     this.router.navigateByUrl(`/search/producto/${termino}`);
@@ -194,8 +223,6 @@ export class HeaderComponent implements OnInit {
             const id_token = googleUser.getAuthResponse().id_token;
             this.userService.loginGoogle( id_token )
               .subscribe( resp => {
-
-                console.log(resp);
                 
 
                 this.cargarUser();

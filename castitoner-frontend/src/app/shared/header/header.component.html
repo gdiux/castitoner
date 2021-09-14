@@ -150,7 +150,7 @@
 
         <div class="navbar navbar-expand-lg navbar-light navbar-stuck-menu mt-n2 pt-0 pb-2">
             <div class="container">
-                <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="collapse navbar-collapse" id="navbarCollapse" #navbarCollapse>
 
                     <!-- Search-->
                     <div class="input-group d-lg-none my-3"><i class="ci-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
@@ -165,55 +165,37 @@
                                 <i class="ci-menu align-middle mt-n1 me-2"></i>Categorias
                             </a>
 
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" *ngIf="categorias">
 
-                                <li class="dropdown mega-dropdown">
+                                <li class="dropdown mega-dropdown" *ngFor="let categoria of categorias">
 
                                     <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                        <i class="ci-laptop opacity-60 fs-lg mt-n1 me-2">                        
-                                        </i>Computers &amp; Accessories
+                                        <i class="ci-flag opacity-60 fs-lg mt-n1 me-2">                        
+                                        </i>{{ categoria.name }}
                                     </a>
 
                                     <div class="dropdown-menu p-0">
                                         <div class="d-flex flex-wrap flex-sm-nowrap px-2">
                                             <div class="mega-dropdown-column pt-4 pb-0 py-sm-4 px-3">
                                                 <div class="widget widget-links">
-                                                    <h6 class="fs-base mb-3">Computers</h6>
+                                                    <h6 class="fs-base mb-3"> {{ categoria.name }} </h6>
                                                     <ul class="widget-list">
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Laptops &amp; Tablets</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Desktop Computers</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Computer External Components</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Computer Internal Components</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Networking Products (NAS)</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Single Board Computers</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Desktop Barebones</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="mega-dropdown-column py-4 px-3">
-                                                <div class="widget widget-links">
-                                                    <h6 class="fs-base mb-3">Accessories</h6>
-                                                    <ul class="widget-list">
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Monitors</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Bags, Cases &amp; Sleeves</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Batteries</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Charges &amp; Adapters</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Cooling Pads</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Mounts</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Replacement Screens</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Security Locks</a></li>
-                                                        <li class="widget-list-item pb-1"><a class="widget-list-link" href="#">Stands</a></li>
+                                                        <li class="widget-list-item pb-1" *ngFor="let departamento of categoria.department">
+                                                            <a class="widget-list-link" [routerLink]="['/search/departamento', departamento.department._id]"> {{ departamento.department.name }} </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                             <div class="mega-dropdown-column d-none d-lg-block py-4 text-center">
-                                                <a class="d-block mb-2" href="#"><img src="./assets/img/shop/departments/07.jpg" alt="Computers &amp; Accessories"></a>
-                                                <div class="fs-sm mb-3">Starting from <span class='fw-medium'>$149.<small>80</small></span></div><a class="btn btn-primary btn-shadow btn-sm" href="#">See offers<i class="ci-arrow-right fs-xs ms-1"></i></a>
+                                                <a class="d-block mb-2" href="#">
+                                                    <img src="./assets/img/home/hero-slider/pho.webp" alt="Computers &amp; Accessories"></a>
+                                                <div class="fs-sm mb-3">Pide ahora </div><a class="btn btn-primary btn-shadow btn-sm" [routerLink]="['/search/departamento', categoria.department[0].department._id]">Ver Productos<i class="ci-arrow-right fs-xs ms-1"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="dropdown mega-dropdown"><a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="ci-mobile opacity-60 fs-lg mt-n1 me-2"></i>Smartphones &amp; Tablets</a>
+
+                                <!-- <li class="dropdown mega-dropdown"><a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="ci-mobile opacity-60 fs-lg mt-n1 me-2"></i>Smartphones &amp; Tablets</a>
                                     <div class="dropdown-menu p-0">
                                         <div class="d-flex flex-wrap flex-md-nowrap px-2">
                                             <div class="mega-dropdown-column pt-4 pb-0 py-sm-4 px-3">
@@ -556,7 +538,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li> -->
+
                             </ul>
                         </li>
                     </ul>
