@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://localhost:3000/api',
-  local_url: 'http://localhost:3000'
+  base_url: 'https://castitoner.com/api',
+  local_url: 'https://castitoner.com'
 };
 
 /*

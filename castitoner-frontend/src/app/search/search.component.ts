@@ -72,9 +72,19 @@ export class SearchComponent implements OnInit {
    *  SELECCIONAR PRODUCTO PARA EL MODAL
   ==================================================================== */
   public productoM: Product | undefined;
+  public stock: any;
+  public stock1: number = 0;
   productoModal(producto: Product){
-
+    this.stock1 = 0;
     this.productoM = producto;
+
+    this.stock1 = producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0);
+
+    if (this.stock1 === 0) {
+      this.stock1 = 1;
+    }
+
+    this.stock = Array(this.stock1).fill(1).map((x,i)=>i);    
 
   }
 
@@ -114,7 +124,9 @@ export class SearchComponent implements OnInit {
   ==================================================================== */
   public carrito: Carrito[] = [];
   public local: any;
-  agregarCarrito(product: Product, qty: number ){
+  agregarCarrito(product: Product, qty: any ){
+
+    qty = Number(qty);
 
     if (localStorage.getItem('carrito')) {
 

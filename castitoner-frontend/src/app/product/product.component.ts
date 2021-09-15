@@ -102,13 +102,25 @@ export class ProductComponent implements OnInit {
    *  CARGAR PRODUCTOS
   ==================================================================== */
   public producto: Product | undefined;
+  public stock: any;
+  public stock1: number = 0;
   cargarProducto(id: string){
 
     this.porductService.cargarProductoId(id)
         .subscribe(
           ({ product }) =>{
 
+            this.stock1 = 0;
+
             this.producto = product;
+
+            this.stock1 = product.stock + ( product.returned || 0 ) + ( product.bought || 0 ) - (product.sold || 0) - ( product.damaged || 0);
+
+            if (this.stock1 === 0) {
+              this.stock1 = 1;
+            }
+
+            this.stock = Array(this.stock1).fill(1).map((x,i)=>i);    
 
             this.cargarProductos(this.producto.department._id);
             this.scrollTop();
@@ -137,7 +149,9 @@ export class ProductComponent implements OnInit {
   ==================================================================== */
   public carrito: Carrito[] = [];
   public local: any;
-  agregarCarrito(product: Product, qty: number ){
+  agregarCarrito(product: Product, qty: any ){
+
+    qty = Number(qty);
 
     if (localStorage.getItem('carrito')) {
 
