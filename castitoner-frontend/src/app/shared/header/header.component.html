@@ -181,7 +181,7 @@
                                                     <h6 class="fs-base mb-3"> {{ categoria.name }} </h6>
                                                     <ul class="widget-list">
                                                         <li class="widget-list-item pb-1" *ngFor="let departamento of categoria.department">
-                                                            <a class="widget-list-link" [routerLink]="['/search/departamento', departamento.department._id]"> {{ departamento.department.name }} </a>
+                                                            <a class="widget-list-link" (click)="cerrarMenu()" [routerLink]="['/search/departamento', departamento.department._id]"> {{ departamento.department.name }} </a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -189,7 +189,7 @@
                                             <div class="mega-dropdown-column d-none d-lg-block py-4 text-center">
                                                 <a class="d-block mb-2" href="#">
                                                     <img src="./assets/img/home/hero-slider/pho.webp" alt="Computers &amp; Accessories"></a>
-                                                <div class="fs-sm mb-3">Pide ahora </div><a class="btn btn-primary btn-shadow btn-sm" [routerLink]="['/search/departamento', categoria.department[0].department._id]">Ver Productos<i class="ci-arrow-right fs-xs ms-1"></i></a>
+                                                <div class="fs-sm mb-3">Pide ahora </div><a class="btn btn-primary btn-shadow btn-sm" (click)="cerrarMenu()" [routerLink]="['/search/departamento', categoria.department[0].department._id]">Ver Productos<i class="ci-arrow-right fs-xs ms-1"></i></a>
                                             </div>
                                         </div>
                                     </div>

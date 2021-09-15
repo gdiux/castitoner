@@ -127,12 +127,20 @@ export class HeaderComponent implements OnInit {
       return;
     }
 
-    let navbar = document.getElementById("navbarCollapse");
-    navbar?.classList.remove('show');
+    // CERRAR MENU
+    this.cerrarMenu();    
 
     // INGRESAR
     this.router.navigateByUrl(`/search/producto/${termino}`);
 
+  }
+
+  /** ================================================================
+   *  CERRAR MENU
+  ==================================================================== */
+  cerrarMenu(){
+    let navbar = document.getElementById("navbarCollapse");
+    navbar?.classList.remove('show');
   }
 
   /** ================================================================
