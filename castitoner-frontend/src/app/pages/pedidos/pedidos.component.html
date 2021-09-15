@@ -111,6 +111,12 @@
 
                     <tbody>
 
+                        <tr *ngIf="listaPedidos.length === 0">
+                            <td colspan="4">
+                                <h4 class="mb-0">No tienes pedidos...</h4>
+                            </td>
+                        </tr>
+
                         <tr *ngFor="let pedido of listaPedidos">
                             <td class="py-3">
                                 <a class="nav-link-style fw-medium fs-sm" (click)="detallesPedido(pedido)" href="#order-details" data-bs-toggle="modal"> {{pedido.pedido}} </a>
