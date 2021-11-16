@@ -74,20 +74,15 @@ export class CartComponent implements OnInit {
         this.user.valid = false;        
       }
       this.confirmacion = this.user.valid;      
-    }
-
-    console.log(this.user);
-    
+    }    
 
     this.verCarrito();
-
     
     this.wompi();
 
     if ( localStorage.getItem('token') ) {
       this.login = true;      
     }
-
     
   }
 
@@ -256,9 +251,7 @@ export class CartComponent implements OnInit {
 
 
   }
+ 
 
-  
-  
-
-
+  // FIN DE LA CLASE
 }

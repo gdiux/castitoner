@@ -17,7 +17,7 @@ export class AppComponent {
         } else {
             window.clearInterval(scrollToTop);
         }
-    }, 16);
+  }, 16);
     
 }
 
