@@ -8,7 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'castitoner-frontend';
 
+  public preload: boolean = true;
+
   onActivate(event:any) {
+
+    this.preload = true;
 
     let scrollToTop = window.setInterval(() => {
         let pos = window.pageYOffset;
@@ -17,6 +21,15 @@ export class AppComponent {
         } else {
             window.clearInterval(scrollToTop);
         }
+    
+
+    setTimeout(()=> {
+
+      this.preload = false;
+
+    },1000)
+
+    
   }, 16);
     
 }
