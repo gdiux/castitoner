@@ -123,25 +123,70 @@
                             <textarea formControlName="comentario" class="form-control" rows="4" id="order-comments"></textarea>
                         </div> -->
 
-                        <div *ngIf="!transaction">
-
-                            <h4 class="mb-1">Paga con</h4>
-                            <p class="mb-0 ps-2 text-muted"><small>* Tarjeta de credito </small> </p>
-                            <p class="mb-0 ps-2 text-muted"><small>* Nequi </small> </p>
-                            <p class="mb-0 ps-2 text-muted"><small>* Pse </small> </p>
-                            <p class="mb-0 ps-2 text-muted"><small>* Bancolombia </small> </p>
-                        </div>
-
                         <button type="submit" *ngIf="login || !user.valid" class="btn btn-primary btn-shadow d-block w-100 mt-4">
                             <i class="ci-delivery fs-lg me-2"></i>Confirmar Datos
                         </button>
 
                     </form>
 
-                    <form>
-                        <div #s class="col-12"></div>
-                    </form>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-wompi-tab" data-bs-toggle="tab" data-bs-target="#nav-wompi" type="button" role="tab" aria-controls="nav-wompi" aria-selected="true">Wompi</button>
+                            <button class="nav-link" id="nav-otros-tab" data-bs-toggle="tab" data-bs-target="#nav-otros" type="button" role="tab" aria-controls="nav-otros" aria-selected="false">Otros Pagos</button>
 
+                        </div>
+                    </nav>
+
+                    <div class="tab-content" id="nav-tabContent">
+
+                        <!-- WOMPI -->
+                        <div class="tab-pane fade show active" id="nav-wompi" role="tabpanel" aria-labelledby="nav-wompi-tab">
+
+                            <div *ngIf="!transaction">
+
+                                <h4 class="mb-1">Paga con</h4>
+                                <p class="mb-0 ps-2 text-muted"><small>* Tarjeta de credito </small> </p>
+                                <p class="mb-0 ps-2 text-muted"><small>* Nequi </small> </p>
+                                <p class="mb-0 ps-2 text-muted"><small>* Pse </small> </p>
+                                <p class="mb-0 ps-2 text-muted"><small>* Bancolombia </small> </p>
+                            </div>
+
+                            <button type="button" (click)="pagoWompi()" class="btn btn-accent btn-shadow d-block w-100 mt-4">
+                                <i class="ci-security-check fs-lg me-2"></i>Pagar con Wompi
+                            </button>
+
+                        </div>
+                        <!-- WOMPI -->
+
+                        <!-- OTROS PAGOS -->
+                        <div class="tab-pane fade" id="nav-otros" role="tabpanel" aria-labelledby="nav-otros-tab">
+
+                            <div class="mb-3 mb-4">
+
+                                <form *ngIf="login" autocomplete="off" [formGroup]="pedidoForm" (ngSubmit)="crearPedido()">
+
+                                    <label class="form-label mb-3" for="order-comments">
+                                        <span class="badge bg-info fs-xs me-2">Nota</span><span class="fw-medium">Agrega un comentario adicional</span>
+                                    </label>
+                                    <textarea class="form-control" formControlName="comentario" rows="6" id="order-comments"></textarea>
+
+                                    <button type="submit" class="btn btn-accent btn-shadow d-block w-100 mt-4">
+                                        <i class="ci-security-check fs-lg me-2"></i>Crear pedido
+                                    </button>
+
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- OTROS PAGOS -->
+
+                    </div>
+
+                    <!-- BOTON OLD WOMPI -->
+                    <!-- <form>
+                        <div #s class="col-12"></div>
+                    </form> -->
+                    <!-- BOTON OLD WOMPI -->
 
                     <div class="navbar-tool ms-2">
                         <div id="my-signin2"></div>

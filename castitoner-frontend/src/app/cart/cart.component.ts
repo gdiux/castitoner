@@ -51,10 +51,17 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
 
     this.url = environment.local_url;
+    
+    this.verCarrito();
+    
+    if ( localStorage.getItem('token') ) {
+      this.login = true;      
+    }
 
-    if (!this.login) {
+    if (this.login) {
       
-      
+      this.user = this.userService.user;
+
       this.upUserForm.reset({  
         name: this.user.name || '',
         phone: this.user.phone || '',
@@ -68,28 +75,26 @@ export class CartComponent implements OnInit {
       });
       // CONFIRMAR SI EL CLIENTE YA ACTUALIZO SUS DATOS
 
+
       if (this.user.valid === true) {        
         this.user.valid = true;
       }else{
         this.user.valid = false;        
       }
-      this.confirmacion = this.user.valid;      
-    }    
-
-    this.verCarrito();
-    
-    this.wompi();
-
-    if ( localStorage.getItem('token') ) {
-      this.login = true;      
+      this.confirmacion = this.user.valid; 
     }
+
+    
+    
+    // this.wompi();
+
     
   }
 
   /** ================================================================
    *   ACTUALIZAR USUARIO
   ==================================================================== */
-  public formSubmitted: boolean = false;
+  public Ped: boolean = false;
   public upUserForm = this.fb.group({
 
     name: ['', [Validators.required]],
@@ -105,7 +110,7 @@ export class CartComponent implements OnInit {
 
   actualizarUsuario(){
 
-    this.formSubmitted = true;
+    this.Ped = true;
 
     this.upUserForm.value.email = this.user.email;    
 
@@ -122,7 +127,7 @@ export class CartComponent implements OnInit {
           this.user.valid = true;
           this.confirmacion = true;
 
-          this.wompi();
+          // this.wompi();
 
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error') });
   }
@@ -132,7 +137,7 @@ export class CartComponent implements OnInit {
   ==================================================================== */
   campoValido(campo: string): boolean{
 
-    if ( this.upUserForm.get(campo)?.invalid &&  this.formSubmitted) {      
+    if ( this.upUserForm.get(campo)?.invalid &&  this.Ped) {      
       return true;      
     } else{      
       return false;
@@ -147,6 +152,31 @@ export class CartComponent implements OnInit {
   public transaction: boolean = false;
   public referencia!:string;
   public transaccion: string = '0';
+
+  pagoWompi(){
+
+    this.uuid = new UUID();
+
+    if (this.confirmacion ) {
+
+      window.open(`https://checkout.wompi.co/p/?public-key=pub_prod_6mVGKjbJuRpL2SLeN9e8D41Z12sqAoGI&currency=COP&amount-in-cents=${String(this.total)}00&reference=${this.uuid.getDashFreeUUID()}&redirect-url=${this.url}/validar/${this.uuid.getDashFreeUUID()}`, "_blank");
+
+      this.router.navigateByUrl('/pedidos');
+
+    }else{
+
+      Swal.fire('Atención', 'Debes de actualizar su dirección para completar el pago', 'info');
+
+    }
+
+
+  }
+
+
+  /** ================================================================
+   *  WOMPI
+  ==================================================================== */
+
   wompi(){
 
     // SI NO ESTA APROBADO
@@ -245,11 +275,85 @@ export class CartComponent implements OnInit {
 
       }
 
-      // this.actualizarForm();
+      this.actualizarForm();
 
     }
 
+  }
 
+  /** ================================================================
+   *   ACTUALIZAR FORMULARIO
+  ==================================================================== */
+  actualizarForm(){    
+      
+    this.pedidoForm.reset({
+      name: this.user?.name || '',
+      telefono: this.user?.phone || '',
+      email: this.user?.email || '',
+      cedula: this.user?.cedula || '',
+      direccion: this.user?.address || '',
+      ciudad: this.user?.city || '',
+      departamento: this.user?.department || '',
+      comentario: '',
+      products: this.carrito,
+      amount: this.total,
+    });
+
+}
+
+  /** ================================================================
+   *   CREAR PEDIDO
+  ==================================================================== */
+  public formSubmittedPed:boolean = false;
+  public pedidoForm = this.fb.group({
+    name: ['', [Validators.required]],
+    telefono: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    cedula: ['', [Validators.required]],
+    direccion: ['', [Validators.required]],
+    ciudad: ['', [Validators.required]],
+    departamento: ['', [Validators.required]],
+    comentario: [''],
+    products: ['', [Validators.required]],
+    amount: ['', [Validators.required, Validators.min(1)]],
+    paystatus: [''],
+    referencia: [''],
+    transaccion: [''],
+    status: [true]
+  });
+
+  crearPedido(){    
+    
+    this.Ped = true;
+    this.uuid = new UUID();
+    
+    if (this.pedidoForm.invalid) {
+      Swal.fire('Atención', 'Debes de llenar todos los campos y debes de tener minimo 1 producto en el carrito', 'info')
+      console.log(this.pedidoForm);
+      
+      return;
+    }
+
+    this.pedidoForm.value.paystatus = 'PENDENT';
+    this.pedidoForm.value.referencia = this.uuid.getDashFreeUUID();
+    this.pedidoForm.value.transaccion = this.uuid.getDashFreeUUID();
+    this.pedidoForm.value.status = true;
+    
+    this.pedidosService.createPedidos(this.pedidoForm.value)
+        .subscribe( (resp) => {
+          
+          this.Ped = false;
+          this.total = 0;          
+          this.carrito = [];
+          localStorage.removeItem('carrito');
+
+          this.actualizarForm();
+
+          Swal.fire('Estupendo', 'Se ha creado el pedido exitosamente', 'success');
+
+          this.router.navigateByUrl('/pedidos');
+          
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
  
 
