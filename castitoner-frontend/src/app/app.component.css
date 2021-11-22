@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    z-index: 2000;
     background: #fff;
 }
 
@@ -20,6 +20,12 @@
     width: 100px;
     height: 100px;
     animation: spin 0.6s ease-in infinite;
+}
+
+.title-load {
+    top: 70%;
+    left: 50%;
+    position: absolute;
 }
 
 @keyframes spin {
