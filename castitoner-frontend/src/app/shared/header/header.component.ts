@@ -14,8 +14,6 @@ import { CarritoService } from '../../services/carrito.service';
 import { UserService } from '../../services/user.service';
 import { CategoriaService } from '../../services/categorias.service';
 
-declare const gapi:any;
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -45,11 +43,17 @@ export class HeaderComponent implements OnInit {
     
     // CARGAR DEPARTAMENTOS
     this.cargarDepartamento();
-
-    // RENDERIZAR BOTON DE GOOGLE
-    this.renderButton();
     
   }
+
+  /** ================================================================
+   *   LOGIN
+  ==================================================================== */
+  log(){
+    localStorage.setItem('log', window.location.href);   
+
+  }
+
   /** ================================================================
    *  CARGAR USUARIO
   ==================================================================== */
@@ -78,8 +82,6 @@ export class HeaderComponent implements OnInit {
 
       });
     }
-
-
 
   }
 
@@ -194,55 +196,55 @@ export class HeaderComponent implements OnInit {
 
   }
   
-  /** ================================================================
-   *  INICIAR SESSION CON GOOGLE
-  ==================================================================== */
-  public auth2: any;
-  renderButton() {
+  // /** ================================================================
+  //  *  INICIAR SESSION CON GOOGLE
+  // ==================================================================== */
+  // public auth2: any;
+  // renderButton() {
 
-    if (!this.login) {      
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 40,
-        'height': 40,
-        'longtitle': true,
-        'theme': 'dark',
-      });
+  //   if (!this.login) {      
+  //     gapi.signin2.render('my-signin2', {
+  //       'scope': 'profile email',
+  //       'width': 40,
+  //       'height': 40,
+  //       'longtitle': true,
+  //       'theme': 'dark',
+  //     });
   
-      this.startApp();
-    }
+  //     this.startApp();
+  //   }
 
 
-  }
+  // }
 
-  async startApp() {
+  // async startApp() {
     
-    await this.userService.googleInit();
-    this.auth2 = this.userService.auth2;
+  //   await this.userService.googleInit();
+  //   this.auth2 = this.userService.auth2;
 
-    this.attachSignin( document.getElementById('my-signin2') );
+  //   this.attachSignin( document.getElementById('my-signin2') );
     
-  };
+  // };
 
-  attachSignin(element:any) {
+  // attachSignin(element:any) {
     
-    this.auth2.attachClickHandler( element, {},
-        (googleUser: any) => {
-            const id_token = googleUser.getAuthResponse().id_token;
-            this.userService.loginGoogle( id_token )
-              .subscribe( resp => {
+  //   this.auth2.attachClickHandler( element, {},
+  //       (googleUser: any) => {
+  //           const id_token = googleUser.getAuthResponse().id_token;
+  //           this.userService.loginGoogle( id_token )
+  //             .subscribe( resp => {
                 
 
-                this.cargarUser();
+  //               this.cargarUser();
                 
-                window.location.reload();
+  //               window.location.reload();
 
-              });
+  //             });
 
-        }, (error: any) => {
-            alert(JSON.stringify(error, undefined, 2));
-        });
-  }
+  //       }, (error: any) => {
+  //           alert(JSON.stringify(error, undefined, 2));
+  //       });
+  // }
 
   /** ================================================================
    *  LOGOUT

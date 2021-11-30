@@ -81,6 +81,18 @@
                         <h3 class="fw-normal"> {{ total | currency }} </h3>
                     </div>
 
+                    <!-- INICIO DE SESSION -->
+                    <div *ngIf="!login" class="text-center">
+                        <a [routerLink]="['/login']" class="btn btn-accent btn-shadow" (click)="log()">
+                            Iniciar Session
+                        </a>
+                        <p class="text-wrap mb-0 mt-2">
+
+                            <small class="text-muted">** inicia session para continuar con la compra</small>
+                        </p>
+                    </div>
+                    <!-- INICIO DE SESSION -->
+
                     <form *ngIf="login" autocomplete="off" [formGroup]="upUserForm" (ngSubmit)="actualizarUsuario()">
 
                         <div class="col-auto mb-2">
@@ -89,12 +101,12 @@
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="cedula" type="text" class="form-control text-capitalize" placeholder="Cedula">
+                            <input [readonly]="user?.valid" formControlName="cedula" type="text" class="form-control text-capitalize" placeholder="Cedula">
                             <label for=""> <small>* obligatorio</small> </label>
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="phone" type="text" class="form-control text-capitalize" placeholder="Telefono">
+                            <input [readonly]="user?.valid" formControlName="phone" type="text" class="form-control text-capitalize" placeholder="Telefono">
                             <label for=""> <small>* obligatorio</small> </label>
                         </div>
 
@@ -104,16 +116,16 @@
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="address" type="text" class="form-control text-capitalize" placeholder="Dirección">
+                            <input [readonly]="user?.valid" formControlName="address" type="text" class="form-control text-capitalize" placeholder="Dirección">
                             <label for=""> <small>* obligatorio</small> </label>
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="city" type="text" class="form-control text-capitalize" placeholder="Ciudad">
+                            <input [readonly]="user?.valid" formControlName="city" type="text" class="form-control text-capitalize" placeholder="Ciudad">
                         </div>
 
                         <div class="col-auto mb-2">
-                            <input [readonly]="user.valid" formControlName="department" type="text" class="form-control text-capitalize" placeholder="Departamento">
+                            <input [readonly]="user?.valid" formControlName="department" type="text" class="form-control text-capitalize" placeholder="Departamento">
                         </div>
 
                         <!-- <div class="mb-3 mb-4">
@@ -123,7 +135,7 @@
                             <textarea formControlName="comentario" class="form-control" rows="4" id="order-comments"></textarea>
                         </div> -->
 
-                        <button type="submit" *ngIf="login || !user.valid" class="btn btn-primary btn-shadow d-block w-100 mt-4">
+                        <button type="submit" *ngIf="login || !user?.valid" class="btn btn-primary btn-shadow d-block w-100 mt-4">
                             <i class="ci-delivery fs-lg me-2"></i>Confirmar Datos
                         </button>
 

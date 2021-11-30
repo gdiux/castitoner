@@ -27,6 +27,7 @@ import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
 import { BreadcrumsComponent } from './shared/breadcrums/breadcrums.component';
 import { ValidarComponent } from './validar/validar.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ValidarComponent } from './validar/validar.component';
     ContactComponent,
     CartComponent,
     BreadcrumsComponent,
-    ValidarComponent
+    ValidarComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

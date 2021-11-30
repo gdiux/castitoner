@@ -53,44 +53,70 @@ export class CartComponent implements OnInit {
     this.url = environment.local_url;
     
     this.verCarrito();
+    this.cargarUser();
     
-    if ( localStorage.getItem('token') ) {
-      this.login = true;      
-    }
+    // this.wompi(); 
 
-    if (this.login) {
-      
-      this.user = this.userService.user;
-
-      this.upUserForm.reset({  
-        name: this.user.name || '',
-        phone: this.user.phone || '',
-        email: this.user.email || '',
-        cedula: this.user.cedula || '',
-        address: this.user.address || '',
-        city: this.user.city || '',
-        department: this.user.department || '',
-        valid: this.user.valid
-        
-      });
-      // CONFIRMAR SI EL CLIENTE YA ACTUALIZO SUS DATOS
-
-
-      if (this.user.valid === true) {        
-        this.user.valid = true;
-      }else{
-        this.user.valid = false;        
-      }
-      this.confirmacion = this.user.valid; 
-    }
-
-    
-    
-    // this.wompi();
-
-    
   }
 
+  /** ================================================================
+   *   LOGIN
+  ==================================================================== */
+  log(){
+    localStorage.setItem('log', window.location.href);   
+
+  }
+
+  /** ================================================================
+   *   ACTUALIZAR USUARIO
+  ==================================================================== */
+  cargarUser(){
+
+    if (!localStorage.getItem('token')) {
+      this.login = false;
+      return;
+
+    }else{
+      this.login = true;
+      this.userService.validateToken()
+      .subscribe( resp => {
+        
+        if (resp) {
+          this.user = this.userService.user;
+  
+          this.upUserForm.reset({  
+            name: this.user.name || '',
+            phone: this.user.phone || '',
+            email: this.user.email || '',
+            cedula: this.user.cedula || '',
+            address: this.user.address || '',
+            city: this.user.city || '',
+            department: this.user.department || '',
+            valid: this.user.valid
+            
+          });
+          // CONFIRMAR SI EL CLIENTE YA ACTUALIZO SUS DATOS
+      
+      
+          if (this.user.valid === true) {        
+            this.user.valid = true;
+          }else{
+            this.user.valid = false;        
+          }
+          this.confirmacion = this.user.valid; 
+          
+        }else{
+
+          localStorage.removeItem('token');
+          window.location.reload();
+
+        }
+        
+
+      });
+    }
+
+  }
   /** ================================================================
    *   ACTUALIZAR USUARIO
   ==================================================================== */

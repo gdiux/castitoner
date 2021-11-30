@@ -11,12 +11,14 @@ import { SearchComponent } from './search/search.component';
 import { ContactComponent } from './contact/contact.component';
 import { CartComponent } from './cart/cart.component';
 import { ValidarComponent } from './validar/validar.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data:{ titulo: 'Inicio'} },
   { path: 'about', component: AboutComponent, data:{ titulo: 'Nosotros'} },
+  { path: 'login', component: LoginComponent, data:{ titulo: 'Login'} },
   { path: 'product/:id', component: ProductComponent, data:{ titulo: 'Producto'} },
   { path: 'search/:tipo/:termino', component: SearchComponent, data:{ titulo: 'Buscador'} },
   { path: 'contac', component: ContactComponent, data:{ titulo: 'Contacto'} },
