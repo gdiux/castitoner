@@ -349,13 +349,14 @@ export class CartComponent implements OnInit {
   });
 
   crearPedido(){    
+
+    this.verCarrito();
     
     this.Ped = true;
     this.uuid = new UUID();
     
     if (this.pedidoForm.invalid) {
-      Swal.fire('Atención', 'Debes de llenar todos los campos y debes de tener minimo 1 producto en el carrito', 'info')
-      console.log(this.pedidoForm);
+      Swal.fire('Atención', 'Debes de llenar todos los campos y debes de tener minimo 1 producto en el carrito', 'info');
       
       return;
     }

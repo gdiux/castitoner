@@ -17,9 +17,6 @@ declare const gapi:any;
   ]
 })
 
-
-
-
 export class LoginComponent implements OnInit {
 
   public user!: User;
@@ -82,8 +79,6 @@ export class LoginComponent implements OnInit {
             const id_token = googleUser.getAuthResponse().id_token;
             this.userService.loginGoogle( id_token )
               .subscribe( resp => {
-                
-                
 
                   this.cargarUser();
 
@@ -95,9 +90,6 @@ export class LoginComponent implements OnInit {
                   this.ngZone.run( () => {
                     window.location.href = url;
                   });
-
-                
-                
 
               });
 
