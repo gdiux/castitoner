@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -331,6 +331,8 @@ export class CartComponent implements OnInit {
    *   CREAR PEDIDO
   ==================================================================== */
   public formSubmittedPed:boolean = false;
+  public comentarios!: string;
+
   public pedidoForm = this.fb.group({
     name: ['', [Validators.required]],
     telefono: ['', [Validators.required]],
@@ -365,6 +367,7 @@ export class CartComponent implements OnInit {
     this.pedidoForm.value.referencia = this.uuid.getDashFreeUUID();
     this.pedidoForm.value.transaccion = this.uuid.getDashFreeUUID();
     this.pedidoForm.value.status = true;
+    this.pedidoForm.value.comentario = this.comentarios;
     
     this.pedidosService.createPedidos(this.pedidoForm.value)
         .subscribe( (resp) => {

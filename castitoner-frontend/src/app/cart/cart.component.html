@@ -180,7 +180,7 @@
                                     <label class="form-label mb-3" for="order-comments">
                                         <span class="badge bg-info fs-xs me-2">Nota</span><span class="fw-medium">Agrega un comentario adicional</span>
                                     </label>
-                                    <textarea class="form-control" formControlName="comentario" rows="6" id="order-comments"></textarea>
+                                    <textarea class="form-control" formControlName="comentario" rows="6" id="order-comments" (keypress)="comentarios = comentario.value" [value]="comentario.value" #comentario></textarea>
 
                                     <button type="submit" class="btn btn-accent btn-shadow d-block w-100 mt-4">
                                         <i class="ci-security-check fs-lg me-2"></i>Crear pedido
