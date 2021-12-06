@@ -11,6 +11,9 @@ import { Pedido } from 'src/app/models/pedido.model';
 import { Carrito } from '../../models/carrito.model';
 import { Product } from '../../models/product.model';
 import { LoadProduct } from '../../interfaces/load-products.interface';
+import { Datos } from '../../models/empresa.model';
+import { EmpresaService } from '../../services/empresa.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pedidos',
@@ -24,7 +27,8 @@ export class PedidosComponent implements OnInit {
 
   constructor(  private userService: UserService,
                 private router: Router,
-                private pedidosService: PedidosService) {
+                private pedidosService: PedidosService,
+                private empresaService: EmpresaService) {
 
     this.user = userService.user;
 
@@ -34,7 +38,23 @@ export class PedidosComponent implements OnInit {
 
     // CARGAR PEDIDOS
     this.cargarPedidos();
+
+    // CARGAR DATOS
+    this.cargarDatos();
     
+  }
+
+  /** ================================================================
+   *   CARGAR DATOS DE LA EMPRESA
+  ==================================================================== */
+  public empresa!: Datos;
+  cargarDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( datos => {
+          this.empresa = datos.datos;
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
 
   /** ================================================================
@@ -70,6 +90,9 @@ export class PedidosComponent implements OnInit {
     this.pedidoD = pedido;
     this.carrito = pedido.products;
     this.amountP = pedido.amount;
+
+    console.log(this.pedidoD);
+    
 
   }
 

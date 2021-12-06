@@ -11,6 +11,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PedidosComponent } from './pedidos/pedidos.component';
+import { NgxPrintModule } from 'ngx-print';
 
 
 
@@ -32,7 +33,8 @@ import { PedidosComponent } from './pedidos/pedidos.component';
     RouterModule,
     PipesModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPrintModule
   ]
 })
 export class PagesModule { }
