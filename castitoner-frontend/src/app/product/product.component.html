@@ -71,7 +71,23 @@
                             <!-- Product details-->
                             <div class="col-lg-5 pt-4 pt-lg-0">
                                 <div class="product-details ms-auto pb-3">
-                                    <div class="h3 fw-normal text-accent mb-3 me-1">{{ producto.price | currency }}</div>
+
+                                    <ng-container *ngIf="!login">
+                                        <div class="h3 fw-normal text-accent mb-3 me-1">
+                                            {{producto.price | currency}}
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="login">
+                                        <p *ngIf="user.mayoreo" class="mb-0">
+                                            <small>
+                                                <del> {{ producto.price | currency }} </del>
+                                            </small>
+                                            <span class="badge bg-primary badge-shadow ms-2"> {{ (((producto.wholesale * 100)/ producto.price)-100)/100 | percent:'2.2' }} Descuento</span>
+                                        </p>
+                                        <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo"> {{producto.price | currency}} </div>
+                                        <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.mayoreo"> {{producto.wholesale | currency}} </div>
+                                    </ng-container>
 
                                     <div class="position-relative me-n4 mb-3">
 

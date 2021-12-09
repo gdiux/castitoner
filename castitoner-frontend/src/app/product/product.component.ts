@@ -10,6 +10,8 @@ import { Product } from '../models/product.model';
 import { ProductsService } from '../services/products.service';
 import { CarritoService } from '../services/carrito.service';
 import { Carrito } from '../models/carrito.model';
+import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
 
 // import Swiper core and required modules
 import SwiperCore, {
@@ -35,7 +37,8 @@ export class ProductComponent implements OnInit {
 
   constructor(  private porductService: ProductsService,
                 private activatedRoute: ActivatedRoute,
-                private carritoService: CarritoService) { 
+                private carritoService: CarritoService,
+                private userService: UserService) { 
 
                   
                   
@@ -48,13 +51,13 @@ export class ProductComponent implements OnInit {
       this.cargarProducto(id);
       
     });   
-  
-
+    
+    
     /** ================================================================
      *  LOCALSTORAGE
     ==================================================================== */
     this.carrtioServicio = this.carritoService.carrito;
-
+    
     // CARRITO LOCAL
     if (localStorage.getItem('carrito')) {
       this.local = localStorage.getItem('carrito');
@@ -62,9 +65,40 @@ export class ProductComponent implements OnInit {
     }else{
       this.carrito = [];
     }
-
+    
     this.carrtioServicio = this.carrito;
+    
+    this.cargarUser();
+  }
 
+  /** ================================================================
+   *  CARGAR USER
+  ==================================================================== */
+  public login: boolean = false;
+  public user!: User;
+  cargarUser(){
+
+    if (!localStorage.getItem('token')) {
+      this.login = false;
+      return;
+
+    }else{
+      this.login = true;
+      this.userService.validateToken()
+      .subscribe( resp => {
+        
+        if (resp) {
+          this.user = this.userService.user;                    
+          
+        }else{
+
+          localStorage.removeItem('token');
+          window.location.reload();
+
+        }
+
+      });
+    }
   }
 
   /** ================================================================
@@ -151,6 +185,13 @@ export class ProductComponent implements OnInit {
   public local: any;
   agregarCarrito(product: Product, qty: any ){
 
+    let precio: number = product.price;
+    if (this.login) {
+      if (this.user.mayoreo) {
+        precio = product.wholesale;        
+      }
+    }
+
     qty = Number(qty);
 
     if (localStorage.getItem('carrito')) {
@@ -175,7 +216,7 @@ export class ProductComponent implements OnInit {
           name: product.name,
           img: product.img,
           qty,
-          price: product.price
+          price: precio
         });
 
       }else{
@@ -194,7 +235,7 @@ export class ProductComponent implements OnInit {
         name: product.name,
         img: product.img,
         qty,
-        price: product.price
+        price: precio
       });
 
     }

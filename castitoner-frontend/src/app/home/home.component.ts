@@ -4,10 +4,12 @@ import Swal from 'sweetalert2';
 
 // SERVICES
 import { ProductsService } from '../services/products.service';
+import { UserService } from '../services/user.service';
 
 // MODELS
 import { Product } from '../models/product.model';
 import { Carrito } from '../models/carrito.model';
+import { User } from '../models/user.model';
 
 // import Swiper core and required modules
 import SwiperCore, {
@@ -30,12 +32,45 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 })
 export class HomeComponent implements OnInit {
   
-  constructor(  private porductService: ProductsService ) { }
+  constructor(  private porductService: ProductsService,
+                private userService: UserService, ) { }
 
   ngOnInit(): void {
 
     this.cargarProductos();
+    this.cargarUser();
 
+  }
+
+  /** ================================================================
+   *  CARGAR USER
+  ==================================================================== */
+  public login: boolean = false;
+  public user!: User;
+  cargarUser(){
+
+    if (!localStorage.getItem('token')) {
+      this.login = false;
+      return;
+
+    }else{
+      this.login = true;
+      this.userService.validateToken()
+      .subscribe( resp => {
+        
+        if (resp) {
+          this.user = this.userService.user;                    
+          
+        }else{
+
+          localStorage.removeItem('token');
+          window.location.reload();
+
+        }
+        
+
+      });
+    }
   }
 
   /** ================================================================
@@ -53,7 +88,6 @@ export class HomeComponent implements OnInit {
           }, (err) => { console.log('Error: ', err); }
           
         );
-
 
   }
 
@@ -84,7 +118,14 @@ export class HomeComponent implements OnInit {
   ==================================================================== */
   public carrito: Carrito[] = [];
   public local: any;
-  agregarCarrito(product: Product, qty: any ){
+  agregarCarrito(product: Product, qty: any){
+
+    let precio: number = product.price;
+    if (this.login) {
+      if (this.user.mayoreo) {
+        precio = product.wholesale;        
+      }
+    }
 
     qty = Number(qty);
 
@@ -110,7 +151,7 @@ export class HomeComponent implements OnInit {
           name: product.name,
           img: product.img,
           qty,
-          price: product.price
+          price: precio
         });
 
       }else{
@@ -129,7 +170,7 @@ export class HomeComponent implements OnInit {
         name: product.name,
         img: product.img,
         qty,
-        price: product.price
+        price: precio
       });
 
     }

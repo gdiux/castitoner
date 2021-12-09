@@ -5,11 +5,13 @@ import Swal from 'sweetalert2';
 // SERIVES
 import { SearchService } from '../services/search.service';
 import { DepartmentService } from '../services/department.service';
+import { UserService } from '../services/user.service';
 
 // MODELS
 import { Product } from '../models/product.model';
 import { Department } from '../models/department.model';
 import { Carrito } from '../models/carrito.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-search',
@@ -29,7 +31,8 @@ export class SearchComponent implements OnInit {
   constructor(  private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private searchService: SearchService,
-                private departmentService: DepartmentService) { }
+                private departmentService: DepartmentService,
+                private userService: UserService) { }
     
   ngOnInit(): void {
 
@@ -43,7 +46,38 @@ export class SearchComponent implements OnInit {
     });
 
     this.cargarDepartamento();
+    this.cargarUser();
 
+  }
+
+  /** ================================================================
+   *  CARGAR USER
+  ==================================================================== */
+  public login: boolean = false;
+  public user!: User;
+  cargarUser(){
+
+    if (!localStorage.getItem('token')) {
+      this.login = false;
+      return;
+
+    }else{
+      this.login = true;
+      this.userService.validateToken()
+      .subscribe( resp => {
+        
+        if (resp) {
+          this.user = this.userService.user;                    
+          
+        }else{
+
+          localStorage.removeItem('token');
+          window.location.reload();
+
+        }
+
+      });
+    }
   }
 
   /** ================================================================
@@ -126,6 +160,13 @@ export class SearchComponent implements OnInit {
   public local: any;
   agregarCarrito(product: Product, qty: any ){
 
+    let precio: number = product.price;
+    if (this.login) {
+      if (this.user.mayoreo) {
+        precio = product.wholesale;        
+      }
+    }
+
     qty = Number(qty);
 
     if (localStorage.getItem('carrito')) {
@@ -150,7 +191,7 @@ export class SearchComponent implements OnInit {
           name: product.name,
           img: product.img,
           qty,
-          price: product.price
+          price: precio
         });
 
       }else{
@@ -169,7 +210,7 @@ export class SearchComponent implements OnInit {
         name: product.name,
         img: product.img,
         qty,
-        price: product.price
+        price: precio
       });
 
     }

@@ -15,6 +15,8 @@ export class User {
         public city?: string,
         public department?: string,
         public address?: string,
+        public mayoreo?: boolean,
+        public credit?: boolean,
     ){}
 
     /** ================================================================

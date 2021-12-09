@@ -69,7 +69,22 @@
                             <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"> {{ producto.department.name }} </a>
                                 <h3 class="product-title fs-sm"><a [routerLink]="['/product', producto.pid]">{{ producto.name }}</a></h3>
                                 <div class="d-flex justify-content-between">
-                                    <div class="product-price"><span class="text-accent"> {{producto.price | currency}} </span></div>
+                                    <div class="product-price">
+                                        <ng-container *ngIf="!login">
+                                            <span class="text-accent"> {{producto.price | currency}} </span>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="login">
+                                            <p *ngIf="user.mayoreo" class="mb-0">
+                                                <small>
+                                                    <del> {{ producto.price | currency }} </del>
+                                                </small>
+                                                <span class="badge bg-primary ms-2"> {{ (((producto.wholesale * 100)/ producto.price)-100)/100 | percent:'2.2' }} Descuento</span>
+                                            </p>
+                                            <span class="text-accent" *ngIf="!user.mayoreo"> {{producto.price | currency}} </span>
+                                            <span class="text-accent" *ngIf="user.mayoreo"> {{producto.wholesale | currency}} </span>
+                                        </ng-container>
+                                    </div>
                                     <!-- <div class="star-rating"><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i>
                                     </div> -->
                                 </div>
@@ -157,7 +172,22 @@
                                 </div><span class="d-inline-block fs-sm text-body align-middle mt-1 ms-1">74 Votos</span>
                             </div>
 
-                            <div class="h3 fw-normal text-accent mb-3 me-1"> {{productoM.price | currency}} </div>
+                            <ng-container *ngIf="!login">
+                                <div class="h3 fw-normal text-accent mb-3 me-1">
+                                    {{productoM.price | currency}}
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="login">
+                                <p *ngIf="user.mayoreo" class="mb-0">
+                                    <small>
+                                        <del> {{ productoM.price | currency }} </del>
+                                    </small>
+                                    <span class="badge bg-primary badge-shadow ms-2"> {{ (((productoM.wholesale * 100)/ productoM.price)-100)/100 | percent:'2.2' }} Descuento</span>
+                                </p>
+                                <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo"> {{productoM.price | currency}} </div>
+                                <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.mayoreo"> {{productoM.wholesale | currency}} </div>
+                            </ng-container>
 
                             <div class="position-relative me-n4 mb-3">
 
