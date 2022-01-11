@@ -44,7 +44,7 @@ export class ProductsService {
    *   CARGAR PRODUCTOS
   ==================================================================== */
   cargarProductos(desde: number = 0){
-    const endPoint = `/products?desde=${desde}`;
+    const endPoint = `/products?desde=${desde}&status=${false}`;
     return this.http.get<LoadProducts>(`${base_url}${endPoint}`, this.headers)
             .pipe(
               map( resp => {

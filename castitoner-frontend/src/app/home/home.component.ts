@@ -83,7 +83,10 @@ export class HomeComponent implements OnInit {
         .subscribe(
           ({ total, products }) =>{
 
-            this.productos = products;            
+            this.productos = products;
+            
+            console.log(products);
+            
   
           }, (err) => { console.log('Error: ', err); }
           

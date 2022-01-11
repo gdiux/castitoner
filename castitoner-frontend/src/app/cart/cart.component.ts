@@ -147,11 +147,16 @@ export class CartComponent implements OnInit {
 
     this.upUserForm.value.valid = true;
     this.userService.updateUser(this.upUserForm.value, this.user.cid)
-        .subscribe( resp =>  {          
+        .subscribe( resp =>  {     
+          
+          console.log(resp);
+          
           
           Swal.fire('Estupendo', 'Se ha confirmado los datos exitosamente', 'success');
           this.user.valid = true;
           this.confirmacion = true;
+
+          window.location.reload();
 
           // this.wompi();
 
@@ -290,9 +295,11 @@ export class CartComponent implements OnInit {
    *  SUMAR PRODUCTOS DEL CARRITO
   ==================================================================== */
   public total:number = 0;
+
   sumarTotales(){
 
     this.total = 0;
+
     if (this.carrito.length > 0) {
       
       for (let i = 0; i < this.carrito.length; i++) {
