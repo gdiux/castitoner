@@ -199,7 +199,11 @@
                                             <div class="mega-dropdown-column d-none d-lg-block py-4 text-center">
                                                 <a class="d-block mb-2" href="#">
                                                     <img src="./assets/img/home/hero-slider/pho.webp" alt="Computers &amp; Accessories"></a>
-                                                <div class="fs-sm mb-3">Pide ahora </div><a class="btn btn-primary btn-shadow btn-sm" (click)="cerrarMenu()" [routerLink]="['/search/departamento', categoria.department[0].department._id]">Ver Productos<i class="ci-arrow-right fs-xs ms-1"></i></a>
+                                                <div class="fs-sm mb-3">Pide ahora </div>
+                                                <!-- <a *ngIf="categoria.department" class="btn btn-primary btn-shadow btn-sm" (click)="cerrarMenu()" [routerLink]="['/search/departamento', categoria.department[0].department._id]">
+                                                    Ver Productos
+                                                    <i class="ci-arrow-right fs-xs ms-1"></i>
+                                                </a> -->
                                             </div>
                                         </div>
                                     </div>

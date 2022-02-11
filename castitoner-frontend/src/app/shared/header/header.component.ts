@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit {
   /** ================================================================
    *  CARGAR CATEGORIAS
   ==================================================================== */
-  public categorias: any[] = [];
+  public categorias: Categoria[] = [];
   cargarCategorias(){
 
     this.categoriaService.loadCategoria()
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit {
 
           this.categorias = categorias;          
 
-        }, (err) => {  }
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); }
         
         )
 

@@ -39,7 +39,7 @@
                         </div>
                         <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 9rem;">
                             <label class="form-label" for="Cantidad1">Cantidad</label>
-                            <input class="form-control" readonly type="number" id="Cantidad1" min="1" [value]="item.qty">
+                            <input class="form-control" type="number" id="Cantidad1" min="1" [value]="item.qty" (change)="actualizarCantidad(item, qty.value) " #qty>
                             <button (click)="eliminarProductoCarrito( i )" class="btn btn-link px-0 text-danger" type="button"><i class="ci-close-circle me-2"></i><span class="fs-sm">Remove</span></button>
                         </div>
                     </div>

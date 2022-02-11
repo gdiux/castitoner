@@ -9,6 +9,7 @@ import {UUID} from 'uuid-generator-ts';
 import { PedidosService } from '../services/pedidos.service';
 import { WompiService } from '../services/wompi.service';
 import { UserService } from '../services/user.service';
+import { CarritoService } from '../services/carrito.service';
 
 // MODELS
 import { Carrito } from '../models/carrito.model';
@@ -16,6 +17,7 @@ import { User } from '../models/user.model';
 
 import { environment } from '../../environments/environment';
 import { Wompi } from '../models/wompi.model';
+import { Product } from '../models/product.model';
 
 
 
@@ -40,7 +42,8 @@ export class CartComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private router: Router,
                 private elementRef:ElementRef,
-                private wompiService: WompiService) {
+                private wompiService: WompiService,
+                private carritoService: CarritoService) {
 
                   this.user = userService.user;
                   
@@ -147,10 +150,7 @@ export class CartComponent implements OnInit {
 
     this.upUserForm.value.valid = true;
     this.userService.updateUser(this.upUserForm.value, this.user.cid)
-        .subscribe( resp =>  {     
-          
-          console.log(resp);
-          
+        .subscribe( resp =>  {   
           
           Swal.fire('Estupendo', 'Se ha confirmado los datos exitosamente', 'success');
           this.user.valid = true;
@@ -311,6 +311,40 @@ export class CartComponent implements OnInit {
       this.actualizarForm();
 
     }
+
+  }
+
+  /** ================================================================
+   *  ACTUALIZAR CANTIDAD PRODUCTOS DEL CARRITO
+  ==================================================================== */
+  actualizarCantidad( product: any, cantidad: any ){
+
+    // CARRITO LOCAL
+    this.local = localStorage.getItem('carrito');
+    this.carrito = JSON.parse(this.local);
+    
+    const validarItem = this.carrito.findIndex( (resp) =>{      
+      if (resp.product === product.product ) {
+        return true;
+      }else {
+        return false;
+      }
+    });    
+
+    if ( validarItem !== -1 ) {
+
+      // AGREGAMOS EL PRODUCTO
+      let qtyTemp = Number(cantidad);
+      this.carrito[validarItem].qty = qtyTemp;
+
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+
+    this.carritoService.upCarrito(this.carrito);
+
+    this.sumarTotales();
+    
 
   }
 
