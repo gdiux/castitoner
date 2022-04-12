@@ -91,6 +91,7 @@
         </div>
     </div>
 </section>
+
 <!-- Products grid (Trending products)-->
 <section class="container pt-5">
     <!-- Heading-->
@@ -127,8 +128,13 @@
                                     </small>
                                     <span class="badge bg-primary ms-2"> {{ (((producto.wholesale * 100)/ producto.price)-100)/100 | percent:'2.2' }} Descuento</span>
                                 </p>
-                                <span class="text-accent" *ngIf="!user.mayoreo"> {{producto.price | currency}} </span>
+                                <span class="text-accent" *ngIf="!user.mayoreo && !user.contratista"> {{producto.price | currency}} </span>
                                 <span class="text-accent" *ngIf="user.mayoreo"> {{producto.wholesale | currency}} </span>
+
+                                <!-- CONTRATISTAS -->
+                                <span class="badge bg-primary ms-2" *ngIf="user.contratista"> {{ 1 | percent }} Descuento</span>
+                                <span class="text-accent" *ngIf="user.contratista"> {{ 0 | currency}} </span>
+                                <!-- CONTRATISTAS -->
                             </ng-container>
 
                         </div>
@@ -151,6 +157,7 @@
 
     </div>
 </section>
+
 <!-- Promo banner-->
 <section class="container mt-4 mb-grid-gutter">
     <div class="bg-faded-info rounded-3 py-4">
@@ -219,8 +226,6 @@
     </swiper>
 
 </section>
-
-
 
 <section class="container pb-5 mb-md-3">
     <div class="border rounded-3 p-3">
@@ -365,8 +370,14 @@
                                     </small>
                                     <span class="badge bg-primary badge-shadow ms-2"> {{ (((productoM.wholesale * 100)/ productoM.price)-100)/100 | percent:'2.2' }} Descuento</span>
                                 </p>
-                                <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo"> {{productoM.price | currency}} </div>
+                                <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo && !user.contratista"> {{productoM.price | currency}} </div>
                                 <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.mayoreo"> {{productoM.wholesale | currency}} </div>
+
+                                <!-- CONTRATISTA -->
+                                <span class="badge bg-primary badge-shadow ms-2" *ngIf="user.contratista"> {{ 1 | percent }} Descuento</span>
+                                <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.contratista"> {{ 0 | currency}} </div>
+                                <!-- CONTRATISTA -->
+
                             </ng-container>
 
 

@@ -50,8 +50,7 @@ export class HeaderComponent implements OnInit {
    *   LOGIN
   ==================================================================== */
   log(){
-    localStorage.setItem('log', window.location.href);   
-
+    localStorage.setItem('log', window.location.href);
   }
 
   /** ================================================================

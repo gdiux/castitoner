@@ -17,6 +17,7 @@ export class User {
         public address?: string,
         public mayoreo?: boolean,
         public credit?: boolean,
+        public contratista?: boolean,
     ){}
 
     /** ================================================================

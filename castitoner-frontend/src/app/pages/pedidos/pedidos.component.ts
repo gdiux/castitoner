@@ -66,8 +66,7 @@ export class PedidosComponent implements OnInit {
   public listaPedidos: Pedido[] = [];
   public totalPedidos: number = 0;
   public total: number = 0;
-  public hasta: number = 50;
-  
+  public hasta: number = 50;  
 
   cargarPedidos(){
 

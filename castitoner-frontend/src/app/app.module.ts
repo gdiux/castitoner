@@ -4,10 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
-
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // MODULES
@@ -16,6 +13,7 @@ import { PipesModule } from './pipes/pipes.module';
 import { PagesModule } from './pages/pages.module';
 
 // COMPONENTS
+import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { HeaderComponent } from './shared/header/header.component';

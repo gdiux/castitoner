@@ -69,9 +69,9 @@ export class UserService {
       .pipe(
         tap( (resp: any) => {          
 
-          const { email, name, cid, valid, img, cedula, phone, city, department, address, mayoreo, credit } = resp.client;
+          const { email, name, cid, valid, img, cedula, phone, city, department, address, mayoreo, credit, contratista } = resp.client;
           
-          this.user = new User( email, name, cid,  valid, img, cedula || '', phone || '', city || '', department || '', address || '', mayoreo, credit);          
+          this.user = new User( email, name, cid,  valid, img, cedula || '', phone || '', city || '', department || '', address || '', mayoreo, credit, contratista);          
           
           localStorage.setItem('token', resp.token);
 
