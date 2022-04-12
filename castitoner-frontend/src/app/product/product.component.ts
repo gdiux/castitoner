@@ -189,6 +189,8 @@ export class ProductComponent implements OnInit {
     if (this.login) {
       if (this.user.mayoreo) {
         precio = product.wholesale;        
+      }else if (this.user.contratista){
+        precio = 0;
       }
     }
 

@@ -85,8 +85,13 @@
                                             </small>
                                             <span class="badge bg-primary badge-shadow ms-2"> {{ (((producto.wholesale * 100)/ producto.price)-100)/100 | percent:'2.2' }} Descuento</span>
                                         </p>
-                                        <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo"> {{producto.price | currency}} </div>
+                                        <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="!user.mayoreo && !user.contratista"> {{producto.price | currency}} </div>
                                         <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.mayoreo"> {{producto.wholesale | currency}} </div>
+
+                                        <!-- CONTRATISTA -->
+                                        <span class="badge bg-primary badge-shadow ms-2" *ngIf="user.contratista"> {{ 1 | percent }} Descuento</span>
+                                        <div class="h3 fw-normal text-accent mb-3 me-1" *ngIf="user.contratista"> {{ 0 | currency}} </div>
+                                        <!-- CONTRATISTA -->
                                     </ng-container>
 
                                     <div class="position-relative me-n4 mb-3">
